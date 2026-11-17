@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Чернильница</title>
+  <meta name="description" content="Рабочее пространство писателя: редактор глав, проверка орфографии, синонимы, персонажи, мир книги и заметки.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%237c5cff'/%3E%3Cpath d='M9 23l3-1 10-10-2-2-10 10-1 3z' fill='white'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Верхняя панель: вкладки и флаги -->
+  <header class="topbar">
+    <div class="brand"><span class="logo" data-icon="edit"></span><span data-i18n="app_name"></span></div>
+    <nav class="tabs">
+      <a class="tab" href="#editor" data-route="editor"><i data-icon="edit"></i><span data-i18n="tab_editor"></span></a>
+      <a class="tab" href="#pravki" data-route="pravki"><i data-icon="check"></i><span data-i18n="tab_pravki"></span><span class="dot hidden" data-i18n-title="dot_tip"></span></a>
+      <a class="tab" href="#syn" data-route="syn"><i data-icon="repeat"></i><span data-i18n="tab_syn"></span></a>
+      <a class="tab" href="#chars" data-route="chars"><i data-icon="users"></i><span data-i18n="tab_chars"></span></a>
+      <a class="tab" href="#world" data-route="world"><i data-icon="map"></i><span data-i18n="tab_world"></span></a>
+      <a class="tab" href="#notes" data-route="notes"><i data-icon="note"></i><span data-i18n="tab_notes"></span></a>
+    </nav>
+    <div class="top-right">
+      <div class="menu-wrap">
+        <button class="icon-btn menu-btn"><i data-icon="menu"></i><span data-i18n="menu_file"></span></button>
+        <div class="menu hidden">
+          <button data-act="import"><i data-icon="upload"></i><span data-i18n="m_import"></span></button>
+          <button data-act="export"><i data-icon="download"></i><span data-i18n="m_export"></span></button>
+          <hr>
+          <button data-act="backup"><i data-icon="save"></i><span data-i18n="m_backup"></span></button>
+          <button data-act="restore"><i data-icon="reset"></i><span data-i18n="m_restore"></span></button>
+          <hr>
+          <button data-act="demo"><i data-icon="beaker"></i><span class="demo-label"></span></button>
+          <button data-act="settings"><i data-icon="sliders"></i><span data-i18n="m_settings"></span></button>
+          <button data-act="help"><i data-icon="help"></i><span data-i18n="m_help"></span></button>
+        </div>
+      </div>
+      <button class="flag" data-lang="en" title="English">
+        <svg viewBox="0 0 30 20" aria-hidden="true">
+          <rect width="30" height="20" fill="#fff"/>
+          <g fill="#B22234">
+            <rect y="0" width="30" height="1.54"/><rect y="3.08" width="30" height="1.54"/><rect y="6.15" width="30" height="1.54"/>
+            <rect y="9.23" width="30" height="1.54"/><rect y="12.31" width="30" height="1.54"/><rect y="15.38" width="30" height="1.54"/>
+            <rect y="18.46" width="30" height="1.54"/>
+          </g>
+          <rect width="13" height="10.77" fill="#3C3B6E"/>
+          <g fill="#fff">
+            <circle cx="2.2" cy="1.8" r=".6"/><circle cx="5.2" cy="1.8" r=".6"/><circle cx="8.2" cy="1.8" r=".6"/><circle cx="11" cy="1.8" r=".6"/>
+            <circle cx="3.7" cy="4" r=".6"/><circle cx="6.7" cy="4" r=".6"/><circle cx="9.7" cy="4" r=".6"/>
+            <circle cx="2.2" cy="6.2" r=".6"/><circle cx="5.2" cy="6.2" r=".6"/><circle cx="8.2" cy="6.2" r=".6"/><circle cx="11" cy="6.2" r=".6"/>
+            <circle cx="3.7" cy="8.5" r=".6"/><circle cx="6.7" cy="8.5" r=".6"/><circle cx="9.7" cy="8.5" r=".6"/>
+          </g>
+        </svg>
+      </button>
+      <button class="flag" data-lang="ru" title="Русский">
+        <svg viewBox="0 0 30 20" aria-hidden="true">
+          <rect width="30" height="10" fill="#d4202b"/>
+          <rect y="10" width="30" height="10" fill="#111"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="demo-banner hidden">
+    <i data-icon="beaker"></i><span data-i18n="demo_banner"></span>
+    <button class="btn sm" data-act="demo-reset" data-i18n="demo_reset"></button>
+    <button class="btn sm primary" data-act="demo" data-i18n="demo_exit"></button>
+  </div>
+
+  <!-- Страницы сайта -->
+  <main id="views">
+    <section class="view" data-view="editor"></section>
+    <section class="view" data-view="pravki"></section>
+    <section class="view" data-view="syn"></section>
+    <section class="view" data-view="chars"></section>
+    <section class="view" data-view="world"></section>
+    <section class="view" data-view="notes"></section>
+  </main>
+
+  <!-- Строка состояния -->
+  <footer class="statusbar">
+    <span class="sb-item sb-ch"></span>
+    <span class="sb-item sb-words"></span>
+    <span class="sb-item sb-save"></span>
+    <span class="sb-item sb-check hidden"><span class="spin"></span><span data-i18n="checking"></span></span>
+    <div class="sb-right">
+      <span class="sb-item sb-limit" data-i18n-title="limit_tip"><span>LanguageTool</span><span class="meter"><i></i></span><span class="val"></span></span>
+      <span class="sb-item timer">
+        <button class="sb-btn t-toggle" data-i18n-title="timer_tip"><i data-icon="clock"></i><span class="t-time"></span><span class="t-mode"></span></button>
+        <button class="sb-btn t-reset" data-i18n-title="timer_reset"><i data-icon="reset"></i></button>
+      </span>
+    </div>
+  </footer>
+
+  <button class="focus-exit btn sm"><i data-icon="x"></i><span data-i18n="focus_exit"></span></button>
+
+  <script src="js/core.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/checker.js"></script>
+  <script src="js/editor.js"></script>
+  <script src="js/pages.js"></script>
+  <script src="js/io.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
