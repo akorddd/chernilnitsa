@@ -257,6 +257,7 @@
     applySettings();
   }
 
+  App.openHelp = openHelp;
   function openHelp() {
     App.modal({
       title: t('m_help'),
@@ -318,6 +319,8 @@
 
     bindMenu();
     bindKeys();
+    App.Theme.init();
+    App.Support.init();
     applyMode();
     applySettings();
     window.addEventListener('hashchange', App.router);

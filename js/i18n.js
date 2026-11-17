@@ -134,7 +134,7 @@ window.App.I18N = {
 
     // Правки
     pravki_title: 'Правки',
-    pravki_sub: 'Замечания по выделенным и проверенным фрагментам. Белая точка на вкладке — появились новые, ещё не просмотренные.',
+    pravki_sub: 'Замечания по выделенным и проверенным фрагментам. Точка на вкладке — появились новые, ещё не просмотренные.',
     check_lang: 'Язык проверки:',
     clear_all: 'Очистить все',
     clear_all_q: 'Удалить все правки из списка? Текст не изменится.',
@@ -251,11 +251,60 @@ window.App.I18N = {
     set_work: 'Таймер: работа, мин',
     set_rest: 'Таймер: отдых, мин',
 
+    // Темы
+    theme_tip: 'Оформление',
+    theme_title: 'Оформление',
+    theme_sub: 'Выберите настроение для работы. Тема запоминается в этом браузере.',
+    th_group_work: 'Для работы · спокойные',
+    th_group_home: 'Для дома · с узорами',
+    th_ink: 'Чернила',
+    th_fjord: 'Фьорд',
+    th_frost: 'Иней',
+    th_sakura: 'Сакура',
+    th_yozakura: 'Ночная сакура',
+    th_ginkgo: 'Гинкго',
+    th_olive: 'Олива',
+    th_pattern: 'Узоры на фоне',
+    th_pattern_hint: 'Цветы, листья, сетка — за листом с текстом',
+    th_motion: 'Падающие лепестки',
+    th_motion_hint: 'Тихо летят на фоне в «домашних» темах',
+
+    // Поддержка
+    support: 'Поддержка',
+    support_tip: 'Помощь и сообщение об ошибке',
+    sup_intro: 'Что-то сломалось или есть идея, как сделать сайт лучше? Напишите — каждое сообщение читается.',
+    sup_bug: 'Сообщить об ошибке',
+    sup_bug_hint: 'Откроется GitHub с готовым шаблоном. Нужен аккаунт GitHub.',
+    sup_idea: 'Предложить идею',
+    sup_idea_hint: 'Чего не хватает? Какую функцию добавить?',
+    sup_copy: 'Скопировать данные',
+    sup_copy_hint: 'Нет GitHub? Скопируйте и вставьте в письмо или сообщение автору.',
+    sup_copied: 'Данные для отчёта скопированы',
+    sup_copy_fail: 'Не удалось скопировать',
+    sup_bug_title: '[Ошибка] ',
+    sup_bug_body: '**Что случилось:**\n\n\n**Что я делал перед этим (по шагам):**\n1. \n2. \n\n**Что ожидал увидеть:**\n',
+    sup_idea_title: '[Идея] ',
+    sup_idea_body: '**Идея:**\n\n\n**Зачем она нужна:**\n',
+    sup_faq: 'Частые вопросы',
+    sup_full_help: 'Полная справка',
+    sup_source: 'исходный код на GitHub',
+    faq_q1: 'Где хранится моя книга?',
+    faq_a1: 'Только в памяти этого браузера на этом компьютере. На сервер ничего не отправляется — кроме выделенного текста, когда вы нажимаете Ctrl+S для проверки (он уходит в LanguageTool). Если очистить данные сайтов в браузере, книга пропадёт, поэтому иногда делайте «Файл → Резервная копия».',
+    faq_q2: 'Как перенести книгу на другой компьютер?',
+    faq_a2: '«Файл → Резервная копия» → положите файл .json в Google Drive → на другом компьютере «Файл → Восстановить из копии». Открывайте сайт в одном и том же браузере.',
+    faq_q3: 'Проверка не находит ошибки или не работает',
+    faq_a3: 'Нужен интернет. Проверяется только выделенный текст (выделить → Ctrl+S). Бесплатный лимит LanguageTool — 20 проверок и 75 КБ в минуту, счётчик внизу справа. Бесплатная версия пропускает часть пунктуации.',
+    faq_q4: 'Как отменить действие?',
+    faq_a4: 'Ctrl+Z в тексте отменяет последние правки, в том числе исправления из «Правок». Удалённую главу вернуть можно только из резервной копии.',
+    faq_q5: 'Узоры или лепестки отвлекают',
+    faq_a5: 'Нажмите кнопку с палитрой вверху и выключите «Узоры» или «Падающие лепестки». Для сосредоточенной работы подойдут темы «Иней» и «Фьорд».',
+
     help_html:
       '<li><b>Ctrl+S</b> — сохранить. Если выделен текст, сайт проверит <b>только выделенное</b> (выделение расширится до целых предложений). Без выделения бесплатный лимит не тратится.</li>' +
       '<li>Текст и так сохраняется сам при каждом изменении — в памяти этого браузера.</li>' +
       '<li>Подчёркивания: <span style="color:var(--spell)">красное</span> — орфография, <span style="color:var(--grammar)">жёлтое</span> — грамматика и пунктуация, <span style="color:var(--style)">синее</span> — стиль, <span style="color:var(--question)">фиолетовое</span> — сайт не понял и переспрашивает. Клик по подчёркнутому слову — подсказка.</li>' +
-      '<li><b>Белая точка</b> на вкладке «Правки» — появились новые замечания, которые вы ещё не смотрели.</li>' +
+      '<li><b>Точка</b> на вкладке «Правки» — появились новые замечания, которые вы ещё не смотрели.</li>' +
+      '<li><b>Палитра</b> вверху — темы оформления: спокойные для работы и уютные с узорами для дома. <b>Поддержка</b> — частые вопросы и сообщение об ошибке.</li>' +
       '<li><b>Стиль</b> — повторы, длинные предложения, слова-паразиты, ваши пометки вида [?]. Работает без интернета.</li>' +
       '<li><b>Ctrl+F</b> — поиск и замена по книге. <b>Esc</b> — закрыть поиск, остановить чтение, выйти из фокуса.</li>' +
       '<li>Главы можно перетаскивать мышкой в списке слева.</li>' +
@@ -389,7 +438,7 @@ window.App.I18N = {
     ask_ph: 'What did you mean?',
 
     pravki_title: 'Edits',
-    pravki_sub: 'Notes on the passages you selected and checked. A white dot on the tab means there are new ones you have not seen.',
+    pravki_sub: 'Notes on the passages you selected and checked. A dot on the tab means there are new ones you have not seen.',
     check_lang: 'Check language:',
     clear_all: 'Clear all',
     clear_all_q: 'Remove all edits from the list? The text will not change.',
@@ -500,11 +549,60 @@ window.App.I18N = {
     set_work: 'Timer: work, min',
     set_rest: 'Timer: break, min',
 
+    // Themes
+    theme_tip: 'Appearance',
+    theme_title: 'Appearance',
+    theme_sub: 'Pick a mood to work in. The theme is remembered in this browser.',
+    th_group_work: 'For work · calm',
+    th_group_home: 'For home · with patterns',
+    th_ink: 'Ink',
+    th_fjord: 'Fjord',
+    th_frost: 'Frost',
+    th_sakura: 'Sakura',
+    th_yozakura: 'Night sakura',
+    th_ginkgo: 'Ginkgo',
+    th_olive: 'Olive',
+    th_pattern: 'Background patterns',
+    th_pattern_hint: 'Flowers, leaves, grid — behind the page',
+    th_motion: 'Falling petals',
+    th_motion_hint: 'Drift quietly in the “home” themes',
+
+    // Support
+    support: 'Support',
+    support_tip: 'Help and bug reports',
+    sup_intro: 'Something broke, or have an idea to make the site better? Write in — every message gets read.',
+    sup_bug: 'Report a bug',
+    sup_bug_hint: 'Opens GitHub with a ready template. Needs a GitHub account.',
+    sup_idea: 'Suggest an idea',
+    sup_idea_hint: 'What is missing? Which feature should be added?',
+    sup_copy: 'Copy diagnostics',
+    sup_copy_hint: 'No GitHub? Copy and paste it into an email or message to the author.',
+    sup_copied: 'Diagnostics copied',
+    sup_copy_fail: 'Could not copy',
+    sup_bug_title: '[Bug] ',
+    sup_bug_body: '**What happened:**\n\n\n**Steps before it happened:**\n1. \n2. \n\n**What I expected:**\n',
+    sup_idea_title: '[Idea] ',
+    sup_idea_body: '**Idea:**\n\n\n**Why it is useful:**\n',
+    sup_faq: 'FAQ',
+    sup_full_help: 'Full help',
+    sup_source: 'source code on GitHub',
+    faq_q1: 'Where is my book stored?',
+    faq_a1: 'Only in this browser on this computer. Nothing is sent to a server — except the selected text when you press Ctrl+S to check it (it goes to LanguageTool). Clearing site data in the browser deletes the book, so make a “File → Backup” now and then.',
+    faq_q2: 'How do I move the book to another computer?',
+    faq_a2: '“File → Backup” → put the .json file in Google Drive → on the other computer “File → Restore from backup”. Use the same browser each time.',
+    faq_q3: 'The checker finds nothing or does not work',
+    faq_a3: 'It needs internet. Only the selected text is checked (select → Ctrl+S). The free LanguageTool limit is 20 checks and 75 KB per minute — see the meter at the bottom right. The free version misses some punctuation.',
+    faq_q4: 'How do I undo something?',
+    faq_a4: 'Ctrl+Z in the text undoes recent edits, including fixes applied from “Edits”. A deleted chapter can only be restored from a backup.',
+    faq_q5: 'Patterns or petals are distracting',
+    faq_a5: 'Click the palette button at the top and turn off “Background patterns” or “Falling petals”. For focused work try the “Frost” and “Fjord” themes.',
+
     help_html:
       '<li><b>Ctrl+S</b> saves. If text is selected, the site checks <b>only the selection</b> (expanded to whole sentences). Without a selection the free limit is not used.</li>' +
       '<li>Text is also saved automatically on every change — in this browser’s storage.</li>' +
       '<li>Underlines: <span style="color:var(--spell)">red</span> — spelling, <span style="color:var(--grammar)">yellow</span> — grammar and punctuation, <span style="color:var(--style)">blue</span> — style, <span style="color:var(--question)">purple</span> — the site did not understand and asks. Click an underlined word for a hint.</li>' +
-      '<li>A <b>white dot</b> on the “Edits” tab means new notes you have not seen yet.</li>' +
+      '<li>A <b>dot</b> on the “Edits” tab means new notes you have not seen yet.</li>' +
+      '<li>The <b>palette</b> at the top switches themes: calm ones for work and cosy patterned ones for home. <b>Support</b> has FAQ and bug reports.</li>' +
       '<li><b>Style</b> finds repeats, long sentences, filler words and your [?] notes. Works offline.</li>' +
       '<li><b>Ctrl+F</b> — find and replace in the book. <b>Esc</b> closes search, stops reading, leaves focus mode.</li>' +
       '<li>Drag chapters in the left list to reorder them.</li>' +

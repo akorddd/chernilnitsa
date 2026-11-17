@@ -9,12 +9,21 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/themes.css">
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    // Тема ставится сразу, до отрисовки страницы, чтобы не было «вспышки» тёмной темы
+    try {
+      var th = JSON.parse(localStorage.getItem('chernilnitsa.theme') || '{}');
+      document.documentElement.setAttribute('data-theme', th.id || 'ink');
+      if (th.pattern === false) document.documentElement.classList.add('no-pattern');
+    } catch (e) {}
+  </script>
 </head>
 <body>
   <!-- Верхняя панель: вкладки и флаги -->
   <header class="topbar">
-    <div class="brand"><span class="logo" data-icon="edit"></span><span data-i18n="app_name"></span></div>
+    <div class="brand"><span class="logo"><i data-icon="edit"></i></span><span data-i18n="app_name"></span></div>
     <nav class="tabs">
       <a class="tab" href="#editor" data-route="editor"><i data-icon="edit"></i><span data-i18n="tab_editor"></span></a>
       <a class="tab" href="#pravki" data-route="pravki"><i data-icon="check"></i><span data-i18n="tab_pravki"></span><span class="dot hidden" data-i18n-title="dot_tip"></span></a>
@@ -24,6 +33,11 @@
       <a class="tab" href="#notes" data-route="notes"><i data-icon="note"></i><span data-i18n="tab_notes"></span></a>
     </nav>
     <div class="top-right">
+      <div class="menu-wrap theme-wrap">
+        <button class="icon-btn theme-btn" data-i18n-title="theme_tip"><i data-icon="palette"></i></button>
+        <div class="pop theme-pop hidden"></div>
+      </div>
+      <button class="icon-btn support-btn" data-i18n-title="support_tip"><i data-icon="lifebuoy"></i><span data-i18n="support"></span></button>
       <div class="menu-wrap">
         <button class="icon-btn menu-btn"><i data-icon="menu"></i><span data-i18n="menu_file"></span></button>
         <div class="menu hidden">
@@ -38,6 +52,7 @@
           <button data-act="help"><i data-icon="help"></i><span data-i18n="m_help"></span></button>
         </div>
       </div>
+      <span class="top-sep"></span>
       <button class="flag" data-lang="en" title="English">
         <svg viewBox="0 0 30 20" aria-hidden="true">
           <rect width="30" height="20" fill="#fff"/>
@@ -103,6 +118,7 @@
   <script src="js/editor.js"></script>
   <script src="js/pages.js"></script>
   <script src="js/io.js"></script>
+  <script src="js/look.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

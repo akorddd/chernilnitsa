@@ -1,0 +1,156 @@
+/* =========================================================
+   Чернильница — темы оформления
+   Каждая тема = набор переменных (цвета, узор, украшение).
+   [data-theme="…"] висит на <html>, а в окне выбора темы —
+   на маленьких превью, поэтому превью рисуются «своей» темой.
+   ========================================================= */
+
+/* ---------- Чернила: тёмная, фиолетовая (по умолчанию) ---------- */
+:root, [data-theme="ink"] {
+  --bg: #0f1015; --bg-2: #15161d; --bg-3: #1b1d26; --bg-4: #252833;
+  --border: #262935; --text: #e6e7ef; --text-dim: #8f95a7; --text-faint: #5c6274;
+  --accent: #8b6cff; --accent-2: #2fd3e6; --on-accent: #fff; --ok: #4ade80;
+  --spell: #ff5d73; --grammar: #ffc145; --style: #4da3ff; --question: #c084fc; --find: #2fd3e6;
+  --st-thesis: #c084fc; --st-draft: #ffa94d; --st-done: #4ade80;
+  --paper: #14151c; --card: #181a22; --dot: #fff;
+  --shadow: 0 1px 0 rgba(255,255,255,.03) inset, 0 18px 50px -12px rgba(0,0,0,.65);
+  --glass-a: 84%;
+  --pattern: radial-gradient(circle at 1px 1px, #8b6cff 1px, transparent 1.6px);
+  --pattern-size: 26px 26px; --pattern-op: .16;
+  --deco: none; --particle: none;
+  color-scheme: dark;
+}
+
+/* ---------- Фьорд: холодная тёмная, для офиса ---------- */
+[data-theme="fjord"] {
+  --bg: #0d141d; --bg-2: #121b26; --bg-3: #172231; --bg-4: #1f2d3f;
+  --border: #22324a; --text: #e1e9f3; --text-dim: #8b9db3; --text-faint: #566a82;
+  --accent: #4d9fff; --accent-2: #5eead4; --on-accent: #fff; --ok: #4ade80;
+  --spell: #ff6b81; --grammar: #f5c451; --style: #6cb4ff; --question: #b79cff; --find: #5eead4;
+  --paper: #111a25; --card: #152030; --dot: #e1e9f3;
+  --shadow: 0 1px 0 rgba(255,255,255,.03) inset, 0 18px 50px -12px rgba(0,0,0,.7);
+  --pattern:
+    linear-gradient(rgba(77,159,255,.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(77,159,255,.5) 1px, transparent 1px);
+  --pattern-size: 40px 40px; --pattern-op: .07;
+  --deco: none; --particle: none;
+  color-scheme: dark;
+}
+
+/* ---------- Иней: холодная светлая, для офиса ---------- */
+[data-theme="frost"] {
+  --bg: #e9eef5; --bg-2: #f5f8fc; --bg-3: #ffffff; --bg-4: #e3e9f1;
+  --border: #d5dde8; --text: #1b2433; --text-dim: #586679; --text-faint: #929fb2;
+  --accent: #2563eb; --accent-2: #0e8fb0; --on-accent: #fff; --ok: #15803d;
+  --spell: #e11d48; --grammar: #c2700a; --style: #2563eb; --question: #9333ea; --find: #0e8fb0;
+  --st-thesis: #9333ea; --st-draft: #ea7a0c; --st-done: #16a34a;
+  --paper: #ffffff; --card: #f7f9fc; --dot: #2563eb;
+  --shadow: 0 1px 2px rgba(20,40,80,.06), 0 14px 40px -14px rgba(20,40,80,.22);
+  --glass-a: 82%;
+  --pattern:
+    linear-gradient(rgba(37,99,235,.55) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37,99,235,.55) 1px, transparent 1px);
+  --pattern-size: 28px 28px; --pattern-op: .07;
+  --deco: none; --particle: none;
+  color-scheme: light;
+}
+
+/* ---------- Сакура: светлая, нежно-розовая, для дома ---------- */
+[data-theme="sakura"] {
+  --bg: #f8eef1; --bg-2: #fdf6f8; --bg-3: #ffffff; --bg-4: #f4e2e8;
+  --border: #ecd4dc; --text: #3b2a31; --text-dim: #876874; --text-faint: #b89aa5;
+  --accent: #d2497c; --accent-2: #5f8f4e; --on-accent: #fff; --ok: #3f8f4f;
+  --spell: #d92d4c; --grammar: #c06d0a; --style: #3772c9; --question: #9b3fc9; --find: #4f8f8a;
+  --st-thesis: #b05fd0; --st-draft: #e0843a; --st-done: #3f9f5a;
+  --paper: #fffcfd; --card: #fdf5f7; --dot: #d2497c;
+  --shadow: 0 1px 2px rgba(120,40,70,.06), 0 16px 44px -14px rgba(150,60,90,.28);
+  --glass-a: 78%;
+  --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cdefs%3E%3Cpath id='p' d='M0 0C-6-5-6-14-2-17L0-14.5L2-17C6-14 6-5 0 0Z'/%3E%3Cg id='b'%3E%3Cuse href='%23p'/%3E%3Cuse href='%23p' transform='rotate(72)'/%3E%3Cuse href='%23p' transform='rotate(144)'/%3E%3Cuse href='%23p' transform='rotate(216)'/%3E%3Cuse href='%23p' transform='rotate(288)'/%3E%3Ccircle r='3' fill='%23c2456f'/%3E%3C/g%3E%3C/defs%3E%3Cg fill='%23e98aa9'%3E%3Cuse href='%23b' transform='translate(48 56) rotate(12)'/%3E%3Cuse href='%23b' transform='translate(186 40) scale(.7) rotate(40)'/%3E%3Cuse href='%23b' transform='translate(150 168) scale(1.15) rotate(-18)'/%3E%3Cuse href='%23b' transform='translate(30 200) scale(.6) rotate(60)'/%3E%3Cuse href='%23p' transform='translate(110 90) rotate(130) scale(.8)'/%3E%3Cuse href='%23p' transform='translate(232 120) rotate(-40) scale(.7)'/%3E%3Cuse href='%23p' transform='translate(84 140) rotate(200) scale(.6)'/%3E%3Cuse href='%23p' transform='translate(220 230) rotate(80) scale(.75)'/%3E%3C/g%3E%3C/svg%3E");
+  --pattern-size: 260px 260px; --pattern-op: .32;
+  --deco: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 460 320'%3E%3Cdefs%3E%3Cpath id='p' d='M0 0C-6-5-6-14-2-17L0-14.5L2-17C6-14 6-5 0 0Z'/%3E%3Cg id='b'%3E%3Cuse href='%23p'/%3E%3Cuse href='%23p' transform='rotate(72)'/%3E%3Cuse href='%23p' transform='rotate(144)'/%3E%3Cuse href='%23p' transform='rotate(216)'/%3E%3Cuse href='%23p' transform='rotate(288)'/%3E%3Ccircle r='3.2' fill='%23b8325f'/%3E%3C/g%3E%3C/defs%3E%3Cg fill='none' stroke='%236b4a42' stroke-linecap='round'%3E%3Cpath d='M470 300C400 270 350 250 300 200S220 120 150 100' stroke-width='9'/%3E%3Cpath d='M300 200C290 160 300 120 330 90' stroke-width='5'/%3E%3Cpath d='M220 140C200 170 170 185 130 190' stroke-width='4'/%3E%3Cpath d='M150 100C120 85 90 82 60 92' stroke-width='3.5'/%3E%3Cpath d='M380 250C370 220 380 190 400 170' stroke-width='4'/%3E%3C/g%3E%3Cg fill='%23f3a3bd'%3E%3Cuse href='%23b' transform='translate(330 88) scale(1.3)'/%3E%3Cuse href='%23b' transform='translate(300 120) rotate(30)'/%3E%3Cuse href='%23b' transform='translate(150 98) scale(1.2) rotate(15)'/%3E%3Cuse href='%23b' transform='translate(62 92) rotate(50) scale(.9)'/%3E%3Cuse href='%23b' transform='translate(130 190) scale(1.1) rotate(-20)'/%3E%3Cuse href='%23b' transform='translate(196 160) scale(.8)'/%3E%3Cuse href='%23b' transform='translate(400 168) scale(1.15) rotate(10)'/%3E%3Cuse href='%23b' transform='translate(250 172) scale(.75) rotate(45)'/%3E%3C/g%3E%3Cg fill='%23e98aa9'%3E%3Cuse href='%23b' transform='translate(100 80) scale(.7) rotate(20)'/%3E%3Cuse href='%23b' transform='translate(360 210) scale(.8) rotate(70)'/%3E%3Cuse href='%23p' transform='translate(90 250) rotate(140)'/%3E%3Cuse href='%23p' transform='translate(200 270) rotate(-60) scale(.8)'/%3E%3C/g%3E%3C/svg%3E");
+  --deco-op: .9;
+  --particle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-9 -19 18 21'%3E%3Cpath d='M0 0C-6-5-6-14-2-17L0-14.5L2-17C6-14 6-5 0 0Z' fill='%23f0a0ba'/%3E%3C/svg%3E");
+  color-scheme: light;
+}
+
+/* ---------- Ночная сакура: тёмная, сливовая, для дома ---------- */
+[data-theme="yozakura"] {
+  --bg: #170f16; --bg-2: #1e141d; --bg-3: #271a25; --bg-4: #332331;
+  --border: #392636; --text: #f4e7ee; --text-dim: #b496a6; --text-faint: #7d6171;
+  --accent: #f28db2; --accent-2: #8fd6c2; --on-accent: #2a0f1c; --ok: #7ee0a0;
+  --spell: #ff6f8e; --grammar: #ffc66b; --style: #82b8ff; --question: #d6a2ff; --find: #8fd6c2;
+  --st-thesis: #d6a2ff; --st-draft: #ffb07a; --st-done: #7ee0a0;
+  --paper: #1c121b; --card: #221720; --dot: #f28db2;
+  --shadow: 0 1px 0 rgba(255,255,255,.03) inset, 0 18px 50px -12px rgba(0,0,0,.7);
+  --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cdefs%3E%3Cpath id='p' d='M0 0C-6-5-6-14-2-17L0-14.5L2-17C6-14 6-5 0 0Z'/%3E%3Cg id='b'%3E%3Cuse href='%23p'/%3E%3Cuse href='%23p' transform='rotate(72)'/%3E%3Cuse href='%23p' transform='rotate(144)'/%3E%3Cuse href='%23p' transform='rotate(216)'/%3E%3Cuse href='%23p' transform='rotate(288)'/%3E%3Ccircle r='3' fill='%23ffd1e0'/%3E%3C/g%3E%3C/defs%3E%3Cg fill='%23f28db2'%3E%3Cuse href='%23b' transform='translate(48 56) rotate(12)'/%3E%3Cuse href='%23b' transform='translate(186 40) scale(.7) rotate(40)'/%3E%3Cuse href='%23b' transform='translate(150 168) scale(1.15) rotate(-18)'/%3E%3Cuse href='%23b' transform='translate(30 200) scale(.6) rotate(60)'/%3E%3Cuse href='%23p' transform='translate(110 90) rotate(130) scale(.8)'/%3E%3Cuse href='%23p' transform='translate(232 120) rotate(-40) scale(.7)'/%3E%3Cuse href='%23p' transform='translate(84 140) rotate(200) scale(.6)'/%3E%3Cuse href='%23p' transform='translate(220 230) rotate(80) scale(.75)'/%3E%3C/g%3E%3C/svg%3E");
+  --pattern-size: 260px 260px; --pattern-op: .13;
+  --deco: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 460 320'%3E%3Cdefs%3E%3Cpath id='p' d='M0 0C-6-5-6-14-2-17L0-14.5L2-17C6-14 6-5 0 0Z'/%3E%3Cg id='b'%3E%3Cuse href='%23p'/%3E%3Cuse href='%23p' transform='rotate(72)'/%3E%3Cuse href='%23p' transform='rotate(144)'/%3E%3Cuse href='%23p' transform='rotate(216)'/%3E%3Cuse href='%23p' transform='rotate(288)'/%3E%3Ccircle r='3.2' fill='%23ffe3ec'/%3E%3C/g%3E%3C/defs%3E%3Cg fill='none' stroke='%23070407' stroke-linecap='round'%3E%3Cpath d='M470 300C400 270 350 250 300 200S220 120 150 100' stroke-width='9'/%3E%3Cpath d='M300 200C290 160 300 120 330 90' stroke-width='5'/%3E%3Cpath d='M220 140C200 170 170 185 130 190' stroke-width='4'/%3E%3Cpath d='M150 100C120 85 90 82 60 92' stroke-width='3.5'/%3E%3Cpath d='M380 250C370 220 380 190 400 170' stroke-width='4'/%3E%3C/g%3E%3Cg fill='%23f7a8c4'%3E%3Cuse href='%23b' transform='translate(330 88) scale(1.3)'/%3E%3Cuse href='%23b' transform='translate(300 120) rotate(30)'/%3E%3Cuse href='%23b' transform='translate(150 98) scale(1.2) rotate(15)'/%3E%3Cuse href='%23b' transform='translate(62 92) rotate(50) scale(.9)'/%3E%3Cuse href='%23b' transform='translate(130 190) scale(1.1) rotate(-20)'/%3E%3Cuse href='%23b' transform='translate(196 160) scale(.8)'/%3E%3Cuse href='%23b' transform='translate(400 168) scale(1.15) rotate(10)'/%3E%3Cuse href='%23b' transform='translate(250 172) scale(.75) rotate(45)'/%3E%3C/g%3E%3Cg fill='%23d9709a'%3E%3Cuse href='%23b' transform='translate(100 80) scale(.7) rotate(20)'/%3E%3Cuse href='%23b' transform='translate(360 210) scale(.8) rotate(70)'/%3E%3Cuse href='%23p' transform='translate(90 250) rotate(140)'/%3E%3Cuse href='%23p' transform='translate(200 270) rotate(-60) scale(.8)'/%3E%3C/g%3E%3C/svg%3E");
+  --deco-op: .55;
+  --particle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-9 -19 18 21'%3E%3Cpath d='M0 0C-6-5-6-14-2-17L0-14.5L2-17C6-14 6-5 0 0Z' fill='%23f7a8c4'/%3E%3C/svg%3E");
+  color-scheme: dark;
+}
+
+/* ---------- Гинкго: тёмно-зелёная с золотыми листьями ---------- */
+[data-theme="ginkgo"] {
+  --bg: #0d1713; --bg-2: #121f1a; --bg-3: #182822; --bg-4: #20342c;
+  --border: #23382f; --text: #e9f0e7; --text-dim: #94aa9c; --text-faint: #5e7467;
+  --accent: #e3b748; --accent-2: #8fd1a0; --on-accent: #1d1503; --ok: #8fd1a0;
+  --spell: #ff7b7b; --grammar: #f3c95b; --style: #7cc0ff; --question: #c9a2ff; --find: #8fd1a0;
+  --st-thesis: #c9a2ff; --st-draft: #f3a35b; --st-done: #8fd1a0;
+  --paper: #111d18; --card: #15241e; --dot: #e3b748;
+  --shadow: 0 1px 0 rgba(255,255,255,.03) inset, 0 18px 50px -12px rgba(0,0,0,.7);
+  --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cdefs%3E%3Cg id='g'%3E%3Cpath d='M0 0V-9' stroke='%23e3b748' stroke-width='1.4' fill='none'/%3E%3Cpath d='M0-9C-9-11-15-18-14-25C-9-28-3-27 0-22C3-27 9-28 14-25C15-18 9-11 0-9Z'/%3E%3C/g%3E%3C/defs%3E%3Cg fill='%23e3b748'%3E%3Cuse href='%23g' transform='translate(50 60) rotate(-20)'/%3E%3Cuse href='%23g' transform='translate(170 40) rotate(35) scale(.8)'/%3E%3Cuse href='%23g' transform='translate(140 160) rotate(160) scale(1.1)'/%3E%3Cuse href='%23g' transform='translate(40 190) rotate(80) scale(.7)'/%3E%3Cuse href='%23g' transform='translate(220 210) rotate(-70) scale(.75)'/%3E%3Cuse href='%23g' transform='translate(100 110) rotate(210) scale(.6)'/%3E%3C/g%3E%3C/svg%3E");
+  --pattern-size: 240px 240px; --pattern-op: .11;
+  --deco: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 460 320'%3E%3Cdefs%3E%3Cg id='g'%3E%3Cpath d='M0 0V-14' stroke='%235b4a2a' stroke-width='2' fill='none'/%3E%3Cpath d='M0-14C-14-17-24-28-22-40C-14-45-5-43 0-35C5-43 14-45 22-40C24-28 14-17 0-14Z'/%3E%3C/g%3E%3C/defs%3E%3Cpath d='M470 290C390 260 320 230 250 170S150 90 70 70' fill='none' stroke='%235b4a2a' stroke-width='6' stroke-linecap='round'/%3E%3Cg fill='%23e3b748'%3E%3Cuse href='%23g' transform='translate(90 74) rotate(-60)'/%3E%3Cuse href='%23g' transform='translate(150 100) rotate(-10)'/%3E%3Cuse href='%23g' transform='translate(160 110) rotate(150)'/%3E%3Cuse href='%23g' transform='translate(240 160) rotate(20) scale(1.1)'/%3E%3Cuse href='%23g' transform='translate(250 172) rotate(170)'/%3E%3Cuse href='%23g' transform='translate(340 228) rotate(-15) scale(1.2)'/%3E%3Cuse href='%23g' transform='translate(350 236) rotate(160) scale(.9)'/%3E%3C/g%3E%3Cg fill='%23c99a2e'%3E%3Cuse href='%23g' transform='translate(200 128) rotate(-40) scale(.8)'/%3E%3Cuse href='%23g' transform='translate(300 200) rotate(200) scale(.85)'/%3E%3Cuse href='%23g' transform='translate(120 250) rotate(110) scale(.7)'/%3E%3C/g%3E%3C/svg%3E");
+  --deco-op: .5;
+  --particle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-16 -30 32 32'%3E%3Cpath d='M0 0V-9' stroke='%23c99a2e' stroke-width='1.4'/%3E%3Cpath d='M0-9C-9-11-15-18-14-25C-9-28-3-27 0-22C3-27 9-28 14-25C15-18 9-11 0-9Z' fill='%23e3b748'/%3E%3C/svg%3E");
+  color-scheme: dark;
+}
+
+/* ---------- Олива: тёплая светлая, как льняная бумага ---------- */
+[data-theme="olive"] {
+  --bg: #f1ebdd; --bg-2: #f8f4ea; --bg-3: #fffdf7; --bg-4: #e9e1cf;
+  --border: #ddd3bd; --text: #2d281d; --text-dim: #6f654c; --text-faint: #a59a7d;
+  --accent: #5f7a2e; --accent-2: #b4622a; --on-accent: #fff; --ok: #4f7f2a;
+  --spell: #c8323f; --grammar: #b8690c; --style: #2f6db5; --question: #8a3fb5; --find: #b4622a;
+  --st-thesis: #8a3fb5; --st-draft: #cf7a28; --st-done: #4f8f3a;
+  --paper: #fffcf4; --card: #faf6ec; --dot: #5f7a2e;
+  --shadow: 0 1px 2px rgba(80,60,20,.07), 0 16px 44px -14px rgba(80,60,20,.28);
+  --glass-a: 80%;
+  --pattern: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 240 240'%3E%3Cdefs%3E%3Cg id='s'%3E%3Cpath d='M0 0C10-10 22-16 40-18' fill='none' stroke='%236b7f3e' stroke-width='1.6'/%3E%3Cg fill='%237f9450'%3E%3Cellipse cx='10' cy='-12' rx='2.6' ry='8' transform='rotate(-60 10 -12)'/%3E%3Cellipse cx='14' cy='-4' rx='2.6' ry='8' transform='rotate(60 14 -4)'/%3E%3Cellipse cx='24' cy='-19' rx='2.4' ry='7.5' transform='rotate(-75 24 -19)'/%3E%3Cellipse cx='28' cy='-9' rx='2.4' ry='7.5' transform='rotate(75 28 -9)'/%3E%3Cellipse cx='44' cy='-19' rx='2.2' ry='7' transform='rotate(90 44 -19)'/%3E%3C/g%3E%3Cellipse cx='20' cy='-10' rx='3.2' ry='4' fill='%23556b2f'/%3E%3C/g%3E%3C/defs%3E%3Cuse href='%23s' transform='translate(30 70) rotate(-10)'/%3E%3Cuse href='%23s' transform='translate(140 40) rotate(25) scale(.8)'/%3E%3Cuse href='%23s' transform='translate(120 170) rotate(-150) scale(1.1)'/%3E%3Cuse href='%23s' transform='translate(30 210) rotate(40) scale(.7)'/%3E%3Cuse href='%23s' transform='translate(200 220) rotate(-80) scale(.75)'/%3E%3C/svg%3E");
+  --pattern-size: 240px 240px; --pattern-op: .22;
+  --deco: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 460 320'%3E%3Cpath d='M470 300C380 270 300 220 230 160S120 80 40 70' fill='none' stroke='%236b5a3a' stroke-width='4' stroke-linecap='round'/%3E%3Cg fill='%238aa05a'%3E%3Cellipse cx='70' cy='60' rx='6' ry='24' transform='rotate(-70 70 60)'/%3E%3Cellipse cx='80' cy='86' rx='6' ry='24' transform='rotate(70 80 86)'/%3E%3Cellipse cx='130' cy='78' rx='6' ry='24' transform='rotate(-55 130 78)'/%3E%3Cellipse cx='140' cy='112' rx='6' ry='24' transform='rotate(80 140 112)'/%3E%3Cellipse cx='190' cy='112' rx='6' ry='25' transform='rotate(-45 190 112)'/%3E%3Cellipse cx='200' cy='148' rx='6' ry='25' transform='rotate(85 200 148)'/%3E%3Cellipse cx='260' cy='164' rx='6' ry='26' transform='rotate(-40 260 164)'/%3E%3Cellipse cx='262' cy='204' rx='6' ry='26' transform='rotate(95 262 204)'/%3E%3Cellipse cx='330' cy='216' rx='6' ry='26' transform='rotate(-30 330 216)'/%3E%3Cellipse cx='330' cy='254' rx='6' ry='26' transform='rotate(100 330 254)'/%3E%3Cellipse cx='400' cy='250' rx='6' ry='24' transform='rotate(-25 400 250)'/%3E%3C/g%3E%3Cg fill='%23556b2f'%3E%3Cellipse cx='165' cy='128' rx='9' ry='11'/%3E%3Cellipse cx='232' cy='186' rx='8' ry='10'/%3E%3C/g%3E%3Cellipse cx='300' cy='236' rx='9' ry='11' fill='%234a3a52'/%3E%3C/svg%3E");
+  --deco-op: .55;
+  --particle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -12 8 24'%3E%3Cellipse rx='3' ry='10' fill='%238aa05a'/%3E%3C/svg%3E");
+  color-scheme: light;
+}
+
+/* ---------- Слои с узором, украшением и падающими лепестками ---------- */
+html { background: var(--bg); }
+body { background: transparent; }
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background-image: var(--pattern); background-size: var(--pattern-size); opacity: var(--pattern-op);
+}
+body::after {
+  content: ''; position: fixed; right: -10px; bottom: 18px; width: min(46vw, 520px); aspect-ratio: 460 / 320;
+  z-index: -2; pointer-events: none;
+  background: var(--deco) no-repeat right bottom / contain; opacity: var(--deco-op, 0);
+}
+html.no-pattern body::before, html.no-pattern body::after { display: none; }
+
+.fall { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.fall i {
+  position: absolute; top: -40px; display: block;
+  background: var(--particle) no-repeat center / contain;
+  animation: fall linear infinite;
+}
+.fall i::after { content: none; }
+@keyframes fall {
+  0%   { transform: translate3d(0, -5vh, 0) rotate(0deg); opacity: 0; }
+  8%   { opacity: .9; }
+  50%  { transform: translate3d(var(--sway, 40px), 50vh, 0) rotate(200deg); }
+  92%  { opacity: .85; }
+  100% { transform: translate3d(calc(var(--sway, 40px) * -0.5), 108vh, 0) rotate(420deg); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .fall { display: none; } }
