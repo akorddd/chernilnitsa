@@ -175,6 +175,35 @@ html.world-peek .amb-float, html.world-peek .focus-exit { visibility: hidden; }
 .wp-stats { margin-top: 12px; font-size: 11.5px; color: var(--text-faint); }
 .wp-hint { font-size: 12px; color: var(--text-dim); margin-top: 4px; }
 .wp-btns { display: flex; justify-content: flex-end; gap: 8px; margin-top: 12px; }
+.wp-hint-top {
+  position: absolute; top: 14px; left: 50%; transform: translateX(-50%); max-width: calc(100vw - 32px);
+  font-size: 12.5px; color: rgba(255,255,255,.88); padding: 6px 14px; border-radius: 999px; pointer-events: none;
+  background: rgba(10, 14, 22, .5); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(8px); text-align: center;
+}
+.world-peek-ui { cursor: crosshair; }
+.world-peek-ui:active { cursor: crosshair; }
+.wp-card { width: min(400px, calc(100vw - 36px)); }
+.wp-min .wp-body { display: none; }
+.wp-min .wp-minb svg { transform: rotate(180deg); }
+.wp-shots { display: flex; flex-wrap: wrap; gap: 6px; }
+.wp-chip2 {
+  display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; padding: 5px 11px; border-radius: 999px; cursor: pointer;
+  color: var(--text); background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12); transition: background .15s, border-color .15s;
+}
+.wp-chip2:hover { background: rgba(255,255,255,.13); }
+.wp-chip2.on { background: color-mix(in srgb, var(--accent) 32%, transparent); border-color: var(--accent); }
+.wp-chip2 svg { width: 12px; height: 12px; }
+.wp-auto { margin-left: auto; }
+.wp-timerow { display: flex; align-items: center; gap: 10px; }
+.wp-time { flex: 1; accent-color: var(--accent); min-width: 0; }
+.wp-clock { font: 600 13px var(--font-ui); font-variant-numeric: tabular-nums; min-width: 42px; text-align: right; }
+.wp-understood { margin-top: 12px; }
+.wp-understood summary { cursor: pointer; font-size: 13px; color: var(--text-dim); }
+.wp-list { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 8px; max-height: 38vh; overflow-y: auto; }
+.wp-list li { display: flex; gap: 9px; font-size: 13px; line-height: 1.4; }
+.wp-it { width: 20px; flex: none; text-align: center; }
+.wp-ty, .wp-where { color: var(--text-dim); font-size: 12px; }
+.wp-list q { display: block; margin-top: 3px; color: var(--text-faint); font: italic 12.5px/1.45 var(--font-serif); quotes: '«' '»'; }
 
 .th-world { display: grid; grid-template-columns: 104px 1fr; gap: 10px; align-items: center; }
 .th-world-txt { font-size: 12px; color: var(--text-dim); line-height: 1.45; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
