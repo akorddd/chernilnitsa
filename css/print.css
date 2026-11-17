@@ -1,0 +1,46 @@
+/* =========================================================
+   Печать / PDF. На экране #print-root не виден.
+   ========================================================= */
+#print-root { display: none; }
+
+@media print {
+  @page { margin: 18mm 16mm 20mm; }
+  @page {
+    @bottom-center { content: counter(page); font: 10pt 'Literata', Georgia, serif; color: #8a8a8a; }
+  }
+  @page :first { @bottom-center { content: none; } }
+
+  html, body { height: auto !important; overflow: visible !important; display: block !important; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body > *:not(#print-root) { display: none !important; }
+  body::after { display: none !important; }
+  html.print-site body::before { opacity: calc(var(--pattern-op) * .55); }
+  html.print-paper { background: #fff !important; }
+  html.print-paper body::before { display: none !important; }
+  html.print-site { background: var(--paper) !important; }
+
+  #print-root { display: block; color: var(--text); font: 11.5pt/1.62 var(--font-serif); }
+  #print-root.look-paper { --text: #1f1d1a; --text-dim: #6b6660; --border: #ddd6cc; color: #1f1d1a; }
+
+  .pr-title, .pr-toc, .pr-ch { break-before: page; }
+  .pr-title { break-before: auto; height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .pr-title h1 { font: italic 600 28pt/1.15 var(--font-serif); margin: 18pt 0 10pt; color: var(--text); }
+  .pr-author { font-size: 13pt; color: var(--text-dim); letter-spacing: .04em; }
+  .pr-year { margin-top: 40pt; font-size: 10pt; color: var(--text-dim); letter-spacing: .2em; }
+
+  .pr-toc h2 { font: 600 16pt var(--font-serif); margin: 0 0 16pt; color: var(--accent); }
+  .pr-toc ol { list-style: none; padding: 0; margin: 0; }
+  .pr-toc li { display: flex; align-items: center; gap: 10pt; padding: 6pt 0; border-bottom: .5pt solid var(--border); }
+  .pr-toc li span { width: 4pt; height: 12pt; border-radius: 2pt; background: var(--c); }
+
+  .pr-ch { padding-top: 12vh; }
+  .pr-num { font: 600 9pt var(--font-ui); letter-spacing: .22em; text-transform: uppercase; color: var(--accent); text-align: center; }
+  .pr-ch h2 { font: 600 20pt/1.2 var(--font-serif); text-align: center; margin: 8pt 0 0; color: var(--text); }
+  .pr-ch .pr-orn { margin: 12pt auto 26pt; }
+  .pr-text p { margin: 0; text-indent: 1.5em; text-align: justify; hyphens: auto; orphans: 2; widows: 2; }
+  .pr-text p:first-child { text-indent: 0; }
+  .pr-text p:first-child::first-letter { float: left; font-size: 3.4em; line-height: .9; padding: 4pt 6pt 0 0; color: var(--accent); font-weight: 600; }
+
+  .pr-orn { display: block; width: 26pt; height: 26pt; text-align: center; font-style: normal; font-size: 20pt; line-height: 26pt; color: var(--accent); margin: 0 auto; }
+  .pr-orn.img { background: var(--particle) center / contain no-repeat; }
+}

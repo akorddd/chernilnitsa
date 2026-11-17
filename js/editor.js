@@ -746,6 +746,7 @@
     toggleFocus(force) {
       const on = force != null ? force : !document.body.classList.contains('focus');
       document.body.classList.toggle('focus', on);
+      App.emit('focus', on);
       requestAnimationFrame(() => {
         this.thesisHL.fit();
         this.textHL.fit();

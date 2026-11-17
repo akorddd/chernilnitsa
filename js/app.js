@@ -135,7 +135,7 @@
   };
 
   /* ---------- Вкладки (страницы сайта) ---------- */
-  const VIEWS = { editor: App.Editor, pravki: App.Pravki, syn: App.Syn, chars: App.Chars, world: App.World, notes: App.Notes };
+  const VIEWS = { editor: App.Editor, board: App.Board, pravki: App.Pravki, syn: App.Syn, chars: App.Chars, world: App.World, notes: App.Notes };
   App.route = null;
   App.router = () => {
     let r = location.hash.slice(1);
@@ -189,6 +189,7 @@
       const a = b.dataset.act;
       if (a === 'import') App.IO.importMd();
       else if (a === 'export') App.IO.exportMd();
+      else if (a === 'pdf') App.Export.open();
       else if (a === 'backup') App.IO.backup();
       else if (a === 'restore') App.IO.restore();
       else if (a === 'demo') toggleDemo();
@@ -321,6 +322,9 @@
     bindKeys();
     App.Theme.init();
     App.Support.init();
+    App.Ambience.init();
+    if (App.Export) App.Export.init();
+    if (App.World3D) App.World3D.init();
     applyMode();
     applySettings();
     window.addEventListener('hashchange', App.router);

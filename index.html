@@ -11,6 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/themes.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/print.css">
   <script>
     // Тема ставится сразу, до отрисовки страницы, чтобы не было «вспышки» тёмной темы
     try {
@@ -26,6 +27,7 @@
     <div class="brand"><span class="logo"><i data-icon="edit"></i></span><span data-i18n="app_name"></span></div>
     <nav class="tabs">
       <a class="tab" href="#editor" data-route="editor"><i data-icon="edit"></i><span data-i18n="tab_editor"></span></a>
+      <a class="tab" href="#board" data-route="board"><i data-icon="board"></i><span data-i18n="tab_board"></span></a>
       <a class="tab" href="#pravki" data-route="pravki"><i data-icon="check"></i><span data-i18n="tab_pravki"></span><span class="dot hidden" data-i18n-title="dot_tip"></span></a>
       <a class="tab" href="#syn" data-route="syn"><i data-icon="repeat"></i><span data-i18n="tab_syn"></span></a>
       <a class="tab" href="#chars" data-route="chars"><i data-icon="users"></i><span data-i18n="tab_chars"></span></a>
@@ -43,6 +45,7 @@
         <div class="menu hidden">
           <button data-act="import"><i data-icon="upload"></i><span data-i18n="m_import"></span></button>
           <button data-act="export"><i data-icon="download"></i><span data-i18n="m_export"></span></button>
+          <button data-act="pdf"><i data-icon="printer"></i><span data-i18n="m_pdf"></span></button>
           <hr>
           <button data-act="backup"><i data-icon="save"></i><span data-i18n="m_backup"></span></button>
           <button data-act="restore"><i data-icon="reset"></i><span data-i18n="m_restore"></span></button>
@@ -88,6 +91,7 @@
   <!-- Страницы сайта -->
   <main id="views">
     <section class="view" data-view="editor"></section>
+    <section class="view" data-view="board"></section>
     <section class="view" data-view="pravki"></section>
     <section class="view" data-view="syn"></section>
     <section class="view" data-view="chars"></section>
@@ -103,6 +107,7 @@
     <span class="sb-item sb-check hidden"><span class="spin"></span><span data-i18n="checking"></span></span>
     <div class="sb-right">
       <span class="sb-item sb-limit" data-i18n-title="limit_tip"><span>LanguageTool</span><span class="meter"><i></i></span><span class="val"></span></span>
+      <button class="sb-btn amb-btn" data-i18n-title="snd_tip"><i data-icon="music"></i><span class="amb-label"></span></button>
       <span class="sb-item timer">
         <button class="sb-btn t-toggle" data-i18n-title="timer_tip"><i data-icon="clock"></i><span class="t-time"></span><span class="t-mode"></span></button>
         <button class="sb-btn t-reset" data-i18n-title="timer_reset"><i data-icon="reset"></i></button>
@@ -111,6 +116,8 @@
   </footer>
 
   <button class="focus-exit btn sm"><i data-icon="x"></i><span data-i18n="focus_exit"></span></button>
+  <button class="amb-float icon-btn" data-i18n-title="snd_tip"><i data-icon="music"></i></button>
+  <div class="pop amb-pop hidden"></div>
 
   <script src="js/core.js"></script>
   <script src="js/i18n.js"></script>
@@ -118,7 +125,11 @@
   <script src="js/editor.js"></script>
   <script src="js/pages.js"></script>
   <script src="js/io.js"></script>
+  <script src="js/board.js"></script>
   <script src="js/look.js"></script>
+  <script src="js/sounds.js"></script>
+  <script src="js/export.js"></script>
+  <script src="js/world.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

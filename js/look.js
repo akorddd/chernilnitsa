@@ -18,6 +18,7 @@
     { id: 'yozakura', group: 'home', fall: 16 },
     { id: 'ginkgo', group: 'home', fall: 10 },
     { id: 'olive', group: 'home', fall: 9 },
+    { id: 'world', group: 'special', fall: 0 }, // фон рисует сам сайт по тексту книги (world.js)
   ];
   const KEY = 'chernilnitsa.theme'; // тема общая для настоящей книги и демо, поэтому хранится отдельно
 
@@ -43,6 +44,7 @@
       root.setAttribute('data-theme', this.s.id);
       root.classList.toggle('no-pattern', !this.s.pattern);
       this.fall();
+      if (App.World3D) App.World3D.sync();
       if (!this.pop.classList.contains('hidden')) this.render();
     },
 
@@ -83,6 +85,9 @@
         <div class="pop-sub">${t('theme_sub')}</div>
         <div class="th-lbl">${t('th_group_work')}</div><div class="th-grid">${grp('work')}</div>
         <div class="th-lbl">${t('th_group_home')}</div><div class="th-grid">${grp('home')}</div>
+        <div class="th-lbl">${t('th_group_special')}</div>
+        <div class="th-world">${grp('special')}<div class="th-world-txt">${t('th_world_hint')}
+          ${this.s.id === 'world' ? `<button class="btn sm primary" data-peek>${App.icon('globe')}${t('th_world_peek')}</button>` : ''}</div></div>
         <div class="th-opts">
           <label class="th-opt"><span>${t('th_pattern')}<small>${t('th_pattern_hint')}</small></span>${sw('pattern', this.s.pattern)}</label>
           <label class="th-opt"><span>${t('th_motion')}<small>${t('th_motion_hint')}</small></span>${sw('motion', this.s.motion, !this.s.pattern)}</label>
@@ -104,6 +109,11 @@
         e.stopPropagation();
         const tile = e.target.closest('[data-th]');
         if (tile) this.set({ id: tile.dataset.th });
+        if (e.target.closest('[data-peek]')) {
+          this.pop.classList.add('hidden');
+          this.btn.classList.remove('on');
+          App.World3D.peek(true);
+        }
       });
       this.pop.addEventListener('change', (e) => {
         const o = e.target.dataset.opt;
