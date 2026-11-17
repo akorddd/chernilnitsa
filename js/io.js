@@ -143,17 +143,15 @@
       App.toast(t('imported', { n: chs.length }), 'ok');
     },
 
-    exportMd() {
+    async exportMd() {
       App.saveNow();
-      App.download(`${App.safeName(App.data.book.title || t('untitled_book'))}.md`, this.buildMd(), 'text/markdown;charset=utf-8');
-      App.toast(t('exported'), 'ok');
+      if (await App.download(`${App.safeName(App.data.book.title || t('untitled_book'))}.md`, this.buildMd(), 'text/markdown;charset=utf-8')) App.toast(t('exported'), 'ok');
     },
 
-    backup() {
+    async backup() {
       App.saveNow();
       const name = `${App.safeName(App.data.book.title || t('untitled_book'))} — ${t('backup_word')} ${App.today()}.json`;
-      App.download(name, JSON.stringify({ app: 'chernilnitsa', v: 1, exported: new Date().toISOString(), data: App.data }, null, 1), 'application/json');
-      App.toast(t('backup_done'), 'ok');
+      if (await App.download(name, JSON.stringify({ app: 'chernilnitsa', v: 1, exported: new Date().toISOString(), data: App.data }, null, 1), 'application/json')) App.toast(t('backup_done'), 'ok');
     },
 
     async restore() {

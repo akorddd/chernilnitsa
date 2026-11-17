@@ -195,6 +195,7 @@
       else if (a === 'demo') toggleDemo();
       else if (a === 'demo-reset') App.resetDemo();
       else if (a === 'settings') openSettings();
+      else if (a === 'sync-undo') App.Sync.undo();
       else if (a === 'help') openHelp();
     });
   }
@@ -329,6 +330,8 @@
     applySettings();
     window.addEventListener('hashchange', App.router);
     App.router();
+    App.updateSyncMenu();
+    App.Sync.start();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

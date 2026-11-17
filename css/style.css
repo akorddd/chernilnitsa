@@ -361,6 +361,10 @@ body.focus .page { max-width: 760px; padding-top: clamp(30px, 6vw, 70px); }
 .sb-ch::before { content: ''; width: 8px; height: 8px; border-radius: 2px; background: var(--chc, var(--accent)); }
 .sb-save.ok { color: var(--ok); }
 .sb-save.err { color: var(--spell); font-weight: 600; }
+.sb-sync { color: var(--text-dim); }
+.sb-sync.s-ok { color: var(--ok); }
+.sb-sync.s-err, .sb-sync.s-full { color: var(--spell); }
+.sb-sync.s-conflict { color: var(--grammar); font-weight: 600; }
 .sb-right { margin-left: auto; display: flex; gap: 16px; align-items: center; }
 .sb-btn { display: flex; align-items: center; gap: 6px; padding: 0 7px; height: 22px; border-radius: 6px; }
 .sb-btn:hover { background: var(--hover); color: var(--text); }

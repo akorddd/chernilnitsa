@@ -49,6 +49,7 @@
           <hr>
           <button data-act="backup"><i data-icon="save"></i><span data-i18n="m_backup"></span></button>
           <button data-act="restore"><i data-icon="reset"></i><span data-i18n="m_restore"></span></button>
+          <button data-act="sync-undo" class="hidden"><i data-icon="reset"></i><span data-i18n="m_sync_undo"></span></button>
           <hr>
           <button data-act="demo"><i data-icon="beaker"></i><span class="demo-label"></span></button>
           <button data-act="settings"><i data-icon="sliders"></i><span data-i18n="m_settings"></span></button>
@@ -104,6 +105,7 @@
     <span class="sb-item sb-ch"></span>
     <span class="sb-item sb-words"></span>
     <span class="sb-item sb-save"></span>
+    <button class="sb-item sb-btn sb-sync hidden"><i data-icon="cloud"></i><span class="sync-txt"></span></button>
     <span class="sb-item sb-check hidden"><span class="spin"></span><span data-i18n="checking"></span></span>
     <div class="sb-right">
       <span class="sb-item sb-limit" data-i18n-title="limit_tip"><span>LanguageTool</span><span class="meter"><i></i></span><span class="val"></span></span>
@@ -130,6 +132,7 @@
   <script src="js/sounds.js"></script>
   <script src="js/export.js"></script>
   <script src="js/world.js"></script>
+  <script src="js/sync.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

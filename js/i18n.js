@@ -30,6 +30,25 @@ window.App.I18N = {
     m_export: 'Экспорт книги в .md',
     m_backup: 'Резервная копия (всё)',
     m_restore: 'Восстановить из копии',
+    download_fail: 'Не удалось сохранить файл',
+    m_sync_undo: 'Вернуть версию до синхронизации',
+    sync_off: '',
+    sync_busy: 'Синхронизация…',
+    sync_ok: 'В облаке',
+    sync_err: 'Нет связи с облаком — сохранено только здесь',
+    sync_full: 'Облако переполнено — сделайте резервную копию',
+    sync_conflict: 'Выберите версию книги',
+    sync_tip: 'Книга сама синхронизируется между ноутбуком и ПК через ваш аккаунт Claude. Видна только вам.',
+    sync_pulled: 'Загружена свежая версия с другого устройства',
+    sync_undo_q: 'Вернуть версию книги, которая была до синхронизации ({when})? Текущая тоже сохранится как запасная.',
+    conflict_title: 'Две разные версии книги',
+    conflict_body: 'Книга изменилась на другом устройстве, а здесь есть свои правки, которых нет в облаке. Какую версию оставить?',
+    conflict_remote: 'Взять из облака',
+    conflict_remote_sub: 'сохранена {when} · {n} слов',
+    conflict_local: 'Оставить эту и отправить в облако',
+    conflict_local_sub: 'на этом устройстве · {n} слов',
+    conflict_note: 'Вторая версия не пропадёт: она останется в этом браузере, её можно вернуть через Файл → «Вернуть версию до синхронизации».',
+    conflict_later: 'Решу позже',
     m_settings: 'Настройки',
     m_help: 'Как пользоваться',
     m_demo_on: 'Включить демо-режим',
@@ -374,7 +393,7 @@ window.App.I18N = {
 
     help_html:
       '<li><b>Ctrl+S</b> — сохранить. Если выделен текст, сайт проверит <b>только выделенное</b> (выделение расширится до целых предложений). Без выделения бесплатный лимит не тратится.</li>' +
-      '<li>Текст и так сохраняется сам при каждом изменении — в памяти этого браузера.</li>' +
+      '<li>Текст сохраняется сам при каждом изменении — в этом браузере и в облаке вашего аккаунта Claude (значок облака внизу).</li>' +
       '<li>Подчёркивания: <span style="color:var(--spell)">красное</span> — орфография, <span style="color:var(--grammar)">жёлтое</span> — грамматика и пунктуация, <span style="color:var(--style)">синее</span> — стиль, <span style="color:var(--question)">фиолетовое</span> — сайт не понял и переспрашивает. Клик по подчёркнутому слову — подсказка.</li>' +
       '<li><b>Точка</b> на вкладке «Правки» — появились новые замечания, которые вы ещё не смотрели.</li>' +
       '<li><b>Палитра</b> вверху — темы оформления: спокойные для работы и уютные с узорами для дома. <b>Поддержка</b> — частые вопросы и сообщение об ошибке.</li>' +
@@ -382,7 +401,7 @@ window.App.I18N = {
       '<li><b>Ctrl+F</b> — поиск и замена по книге. <b>Esc</b> — закрыть поиск, остановить чтение, выйти из фокуса.</li>' +
       '<li>Главы можно перетаскивать мышкой в списке слева.</li>' +
       '<li><b>Тезисы</b> — панель справа. Стрелка в её шапке сворачивает панель вправо, язычок «Тезисы» у края возвращает. Край панели можно тянуть мышкой.</li>' +
-      '<li>Перенос на другой компьютер: <b>Файл → Резервная копия</b>, положить файл в Google Drive, на другом компьютере — <b>Файл → Восстановить из копии</b>.</li>',
+      '<li><b>Ноутбук и ПК</b>: откройте Чернильницу по той же ссылке под своим аккаунтом — книга подтянется сама. Если на двух устройствах окажутся разные правки, сайт спросит, какую версию оставить. Запасной путь — <b>Файл → Резервная копия</b> и <b>Восстановить из копии</b>.</li>',
   },
 
   en: {
@@ -412,6 +431,25 @@ window.App.I18N = {
     m_export: 'Export book to .md',
     m_backup: 'Backup (everything)',
     m_restore: 'Restore from backup',
+    download_fail: 'Could not save the file',
+    m_sync_undo: 'Bring back the version before sync',
+    sync_off: '',
+    sync_busy: 'Syncing…',
+    sync_ok: 'In the cloud',
+    sync_err: 'Cannot reach the cloud — saved only here',
+    sync_full: 'Cloud storage is full — make a backup',
+    sync_conflict: 'Choose a book version',
+    sync_tip: 'The book syncs between your laptop and PC through your Claude account. Only you can see it.',
+    sync_pulled: 'Loaded the latest version from your other device',
+    sync_undo_q: 'Bring back the book as it was before syncing ({when})? The current one is kept as a spare too.',
+    conflict_title: 'Two different versions of the book',
+    conflict_body: 'The book changed on your other device, and this one has edits that are not in the cloud. Which version should stay?',
+    conflict_remote: 'Take the cloud version',
+    conflict_remote_sub: 'saved {when} · {n} words',
+    conflict_local: 'Keep this one and send it to the cloud',
+    conflict_local_sub: 'on this device · {n} words',
+    conflict_note: 'The other version is not lost: it stays in this browser and can be brought back via File → “Bring back the version before sync”.',
+    conflict_later: 'Decide later',
     m_settings: 'Settings',
     m_help: 'How to use',
     m_demo_on: 'Turn on demo mode',
@@ -745,7 +783,7 @@ window.App.I18N = {
 
     help_html:
       '<li><b>Ctrl+S</b> saves. If text is selected, the site checks <b>only the selection</b> (expanded to whole sentences). Without a selection the free limit is not used.</li>' +
-      '<li>Text is also saved automatically on every change — in this browser’s storage.</li>' +
+      '<li>Text is saved automatically on every change — in this browser and in your Claude account’s cloud (the cloud icon at the bottom).</li>' +
       '<li>Underlines: <span style="color:var(--spell)">red</span> — spelling, <span style="color:var(--grammar)">yellow</span> — grammar and punctuation, <span style="color:var(--style)">blue</span> — style, <span style="color:var(--question)">purple</span> — the site did not understand and asks. Click an underlined word for a hint.</li>' +
       '<li>A <b>dot</b> on the “Edits” tab means new notes you have not seen yet.</li>' +
       '<li>The <b>palette</b> at the top switches themes: calm ones for work and cosy patterned ones for home. <b>Support</b> has FAQ and bug reports.</li>' +
@@ -753,6 +791,6 @@ window.App.I18N = {
       '<li><b>Ctrl+F</b> — find and replace in the book. <b>Esc</b> closes search, stops reading, leaves focus mode.</li>' +
       '<li>Drag chapters in the left list to reorder them.</li>' +
       '<li>The <b>outline</b> is a panel on the right. The arrow in its header collapses it to the right; the “Outline” tab at the edge brings it back. Drag its edge to resize.</li>' +
-      '<li>Moving to another computer: <b>File → Backup</b>, put the file in Google Drive, then on the other computer <b>File → Restore from backup</b>.</li>',
+      '<li><b>Laptop and PC</b>: open Inkwell from the same link with your account — the book follows you. If both devices have different edits, the site asks which version to keep. Fallback: <b>File → Backup</b> and <b>Restore from backup</b>.</li>',
   },
 };
