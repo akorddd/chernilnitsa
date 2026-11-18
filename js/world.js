@@ -285,6 +285,10 @@
   const FAR = 12000; // до горизонта
   const FCELL = 400;
   const TEX = 1024; // карта полей и дорог
+  const VB = 5; // кубик подробной земли, м
+  const VN = (2 * R) / VB; // 480 × 480 столбиков
+  const FB = 80, FVH = 20; // кубики дальних гор: 80 м в ширину, ступень 20 м
+  const FVN = (2 * FAR) / FB;
   const HT = 256; // высоты и тени для шейдеров
 
   const lin = (hex, k) => {
@@ -295,7 +299,7 @@
   const mixc = (a, b, k) => [lerp(a[0], b[0], k), lerp(a[1], b[1], k), lerp(a[2], b[2], k)];
   const mulc = (a, k) => [a[0] * k, a[1] * k, a[2] * k];
   const C = {
-    grass: lin('#4d7b2e'), grass2: lin('#6e8b3a'), meadow: lin('#628c36'), forest: lin('#33532a'), sand: lin('#d9c690'),
+    grass: lin('#3f8226'), grass2: lin('#6f9234'), meadow: lin('#559a30'), forest: lin('#355f24'), sand: lin('#d9c690'),
     wet: lin('#a59874'), rock: lin('#7d766b'), rock2: lin('#5d5852'), snow: lin('#eef2f6'), desert: lin('#d8b47a'),
     swamp: lin('#4c5a33'), dirt: lin('#7e6448'), seabed: lin('#8c7b5c'),
   };
@@ -416,22 +420,33 @@
     const r = rng(77);
     const F = frame(0, 0, 0, 0);
     const M = {};
+    const trunk = lin('#5a3c24');
+    const G = (v) => [v, v, v];
     let g = new Geo();
-    cyl(g, F, 0.38, 0.26, 0, 3.2, 6, lin('#55402e'), 0.6);
-    cone(g, F, 3.1, 2.2, 7.6, 7, lin('#24452a'), lin('#1a3020'));
-    cone(g, F, 2.4, 5.2, 10.4, 7, lin('#2a4f2f'), lin('#1d3523'));
-    cone(g, F, 1.6, 8.2, 13.2, 7, lin('#335a33'), lin('#22402a'));
+    // ель: ярусы-коробки сужаются кверху
+    box(g, F, -0.45, 0, -0.45, 0.45, 3, 0.45, trunk, null, 0.7);
+    [[3.0, 2.0, 0.62], [2.4, 4.4, 0.7], [1.8, 6.8, 0.78], [1.2, 9.2, 0.86], [0.6, 11.4, 0.95]].forEach(([r, y, v]) => box(g, F, -r, y, -r, r, y + 2.4, r, G(v), G(v + 0.12), 0.72));
     M.conifer = g;
     g = new Geo();
-    cyl(g, F, 0.42, 0.3, 0, 4.4, 6, lin('#5b4430'), 0.6);
-    blob(g, F, 0, 7, 0, 3.6, 0.82, lin('#4b7a33'), r);
-    blob(g, F, 1.7, 5.9, 0.9, 2.4, 0.85, lin('#55853a'), r);
-    blob(g, F, -1.4, 6.1, -1.1, 2.6, 0.85, lin('#43722f'), r);
+    // лиственное: ствол и ступенчатая крона
+    box(g, F, -0.5, 0, -0.5, 0.5, 4.2, 0.5, trunk, null, 0.7);
+    box(g, F, -3, 3.6, -3, 3, 6.8, 3, G(0.72), G(0.9), 0.7);
+    box(g, F, -2, 6.8, -2, 2, 8.6, 2, G(0.8), G(0.95), 0.8);
+    box(g, F, 2.6, 4.4, -1.4, 3.8, 6.2, 1.2, G(0.7), G(0.86), 0.75);
+    box(g, F, -1.2, 4.2, -3.8, 1.4, 6, -2.6, G(0.7), G(0.86), 0.75);
+    box(g, F, -3.6, 5, 0.4, -2.6, 6.6, 2.2, G(0.74), G(0.88), 0.75);
     M.broad = g;
     g = new Geo();
-    cyl(g, F, 0.25, 0.18, 0, 1.4, 5, lin('#5b4430'), 0.6);
-    blob(g, F, 0, 3.2, 0, 2.1, 1.25, lin('#3f6f34'), r);
+    // тополь: высокая узкая крона
+    box(g, F, -0.35, 0, -0.35, 0.35, 2.4, 0.35, trunk, null, 0.7);
+    box(g, F, -1.4, 2, -1.4, 1.4, 8.4, 1.4, G(0.72), G(0.9), 0.7);
+    box(g, F, -0.8, 8.4, -0.8, 0.8, 10, 0.8, G(0.82), G(0.95), 0.85);
     M.poplar = g;
+    // облако из кубиков
+    g = new Geo();
+    const W2 = G(0.95), Wt = G(1.0);
+    [[-30, 0, -20, 30, 14, 20], [-18, 10, -14, 22, 24, 12], [-46, 2, -10, -24, 12, 12], [24, 3, -8, 44, 13, 14], [-8, 20, -8, 12, 30, 8], [-20, 4, 16, 8, 12, 28]].forEach((c) => box(g, F, c[0], c[1], c[2], c[3], c[4], c[5], W2, Wt, 0.82));
+    M.cloud = g;
     const legs = (g, w, d, h, col) => {
       for (const [x, z] of [[w, d], [w, -d], [-w, d], [-w, -d]]) box(g, F, x - 0.06, 0, z - 0.06, x + 0.06, h, z + 0.06, col, null, 1);
     };
@@ -518,7 +533,7 @@
       const l = Math.hypot(d.x, d.y) || 1;
       L.mts.push({ x: (d.x / l) * (0.62 + rnd() * 0.2), y: (d.y / l) * (0.62 + rnd() * 0.2) });
     }
-    L.mts.forEach((m) => Object.assign(m, { r: 0.42 + rnd() * 0.18, amp: has('snow') ? 430 : 360, sx: rnd() * 50, sy: rnd() * 50 }));
+    L.mts.forEach((m) => Object.assign(m, { r: 0.42 + rnd() * 0.18, amp: has('snow') ? 560 : 500, sx: rnd() * 50, sy: rnd() * 50 }));
     if (has('volcano')) {
       const d = dirs('volcano')[0] || randDir();
       L.volcano = { x: d.x * 0.6, y: d.y * 0.6, r: 0.32 };
@@ -564,7 +579,7 @@
       const mk = sstep(-0.35, 0.05, e);
       for (const m of L.mts) {
         const k = blobK(u, v, m);
-        if (k > 0.004) h += (noise.ridge(u * 2.6 + m.sx, v * 2.6 + m.sy, 5) * 0.85 + 0.2) * m.amp * k * mk;
+        if (k > 0.004) h += Math.pow(noise.ridge(u * 2.6 + m.sx, v * 2.6 + m.sy, 5) * 0.85 + 0.2, 1.25) * m.amp * k * mk;
       }
       if (L.volcano) {
         const d = Math.hypot(u - L.volcano.x, v - L.volcano.y) / L.volcano.r;
@@ -574,7 +589,7 @@
       for (const b of L.swamps) h = lerp(h, Math.min(h, 3 + noise.fbm(u * 20, v * 20, 2) * 3), blobK(u, v, b) * land);
       // Хребты на горизонте, чтобы мир не обрывался
       const rr = Math.hypot(u, v);
-      if (rr > 1.1 && !islandMode) h += sstep(1.15, 2.8, rr) * (noise.ridge(u * 0.75 + 40, v * 0.75 + 9, 4) * 0.9 + 0.12) * 330 * mk;
+      if (rr > 1.1 && !islandMode) h += sstep(1.25, 2.6, rr) * Math.pow(noise.ridge(u * 0.85 + 40, v * 0.85 + 9, 4) * 0.95 + 0.1, 1.45) * 820 * mk;
       return h;
     }
     const forestK = (u, v) => {
@@ -592,7 +607,16 @@
     const gx = (i) => -R + i * CELL;
     for (let j = 0; j < NV; j++) for (let i = 0; i < NV; i++) hg[j * NV + i] = H0(gx(i), gx(j));
     const inside = (x, z) => x > -R && x < R && z > -R && z < R;
+    // После «нарезки на кубики» земля — это верх блока
+    let vox = null;
     function ground(x, z) {
+      if (vox) {
+        const i = Math.floor((x + R) / VB), j = Math.floor((z + R) / VB);
+        if (i >= 0 && j >= 0 && i < VN && j < VN) return vox[j * VN + i] * VB + 0.6;
+      }
+      return gS(x, z);
+    }
+    function gS(x, z) {
       if (!inside(x, z)) return H0(x, z);
       const fx = (x + R) / CELL, fz = (z + R) / CELL;
       const i = Math.min(N - 1, Math.floor(fx)), j = Math.min(N - 1, Math.floor(fz));
@@ -1017,6 +1041,24 @@
       }
     }
 
+    /* ----- Нарезаем землю на кубики ----- */
+    {
+      const lev = new Int16Array(VN * VN);
+      for (let j = 0; j < VN; j++)
+        for (let i = 0; i < VN; i++) {
+          const x = -R + (i + 0.5) * VB, z = -R + (j + 0.5) * VB, h = gS(x, z);
+          const wet = riverDist(x, z) < 1 || lakes.some((l) => Math.hypot(l.x - x, l.z - z) < l.r);
+          lev[j * VN + i] = wet ? Math.floor((h - 0.6) / VB) : Math.round((h - 0.6) / VB);
+        }
+      vox = lev;
+    }
+    // уровень озёр — чуть ниже кромки из кубиков
+    for (const l of lakes) {
+      let m = 1e9;
+      for (let a = 0; a < 24; a++) for (const k of [1.05, 1.2]) m = Math.min(m, ground(l.x + Math.cos(a * 0.2618) * l.r * k, l.z + Math.sin(a * 0.2618) * l.r * k));
+      l.L = Math.min(l.L, m - 0.7);
+    }
+
     /* ----- Постройки ----- */
     const geo = new Geo();
     const sprites = []; // x, y, z, размер, вид, фаза, яркость
@@ -1384,61 +1426,104 @@
       if (h < -0.8) c = mixc(C.seabed, C.wet, sstep(-6, -0.8, h));
       return c;
     }
-    // Подробная сетка: позиция, нормаль, цвет (+ «юбка» по краю)
-    const tv = new Float32Array((NV * NV + 4 * NV) * 9);
-    const hAtIJ = (a, b) => hg[clamp(b, 0, N) * NV + clamp(a, 0, N)];
-    for (let j = 0; j < NV; j++)
-      for (let i = 0; i < NV; i++) {
-        const x = gx(i), z = gx(j), h = hg[j * NV + i];
-        const nn = norm3([hAtIJ(i - 1, j) - hAtIJ(i + 1, j), 2 * CELL, hAtIJ(i, j - 1) - hAtIJ(i, j + 1)]);
-        const c = colorAt(x, z, h, Math.sqrt(1 - nn[1] * nn[1]) / Math.max(nn[1], 0.2), forestK(x / R, z / R));
-        tv.set([x, h, z, nn[0], nn[1], nn[2], c[0], c[1], c[2]], (j * NV + i) * 9);
-      }
-    const idx = [];
-    for (let j = 0; j < N; j++)
-      for (let i = 0; i < N; i++) {
-        const a = j * NV + i, b = a + 1, c = a + NV, d = c + 1;
-        idx.push(a, c, b, b, c, d);
-      }
-    // юбка: край уходит вниз, чтобы стыка с дальней землёй не было видно
-    const edges = [];
-    for (let i = 0; i < NV; i++) edges.push([i, 0]);
-    for (let i = 0; i < NV; i++) edges.push([N, i]);
-    for (let i = 0; i < NV; i++) edges.push([N - i, N]);
-    for (let i = 0; i < NV; i++) edges.push([0, N - i]);
-    let sk = NV * NV;
-    const edgeIdx = [];
-    for (const [i, j] of edges) {
-      const src = (j * NV + i) * 9;
-      tv.copyWithin(sk * 9, src, src + 9);
-      tv[sk * 9 + 1] -= 70;
-      edgeIdx.push([j * NV + i, sk]);
-      sk++;
+    // Верх кубика: трава, цветы, песок, снег. Бок: дёрн → земля → камень, или сплошной камень/песок
+    const S8 = (c) => {
+      const l = c[0] * 0.3 + c[1] * 0.59 + c[2] * 0.11;
+      return [0, 1, 2].map((k) => clamp(Math.round(Math.pow(clamp(l + (c[k] - l) * 1.12, 0, 1), 1 / 2.2) * 255), 0, 255));
+    };
+    function voxTex(n, cw, org, vy, levAt, skip) {
+      const top = new Uint8Array(n * n * 4), side = new Uint8Array(n * n * 4);
+      for (let j = 0; j < n; j++)
+        for (let i = 0; i < n; i++) {
+          if (skip && skip(i, j)) continue;
+          const x = org + (i + 0.5) * cw, z = org + (j + 0.5) * cw;
+          const L0 = levAt(i, j), h = L0 * vy + 0.6;
+          let dmax = 0;
+          for (const [di, dj] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) dmax = Math.max(dmax, Math.abs(levAt(clamp(i + di, 0, n - 1), clamp(j + dj, 0, n - 1)) - L0));
+          const slope = (dmax * vy) / cw;
+          let c = colorAt(x, z, h, slope * 0.7, forestK(x / R, z / R));
+          const snowy = c[0] > 0.6 && c[2] > 0.6;
+          const sandy = !snowy && h < 3.5 && h > -0.5 && coastal;
+          const rocky = !snowy && (slope > 1.4 || h > snowLine - 90);
+          // цветы на лугах: густота пятнами
+          let fd = 0;
+          if (!snowy && !sandy && !rocky && h > 3 && cw < 20) fd = sstep(0.45, 0.75, noise.fbm(x * 0.006 + 40, z * 0.006 + 11, 3)) * (1 - forestK(x / R, z / R)) + 0.08;
+          const q = (j * n + i) * 4;
+          const t8 = S8(c);
+          top[q] = t8[0];
+          top[q + 1] = t8[1];
+          top[q + 2] = t8[2];
+          top[q + 3] = clamp(L0 + 64, 0, 255);
+          const sc = snowy || rocky ? mixc(C.rock, C.rock2, noise.n2(x * 0.01, z * 0.01)) : sandy ? C.sand : h < -0.5 ? C.seabed : lin('#5e4330');
+          const s8 = S8(sc);
+          side[q] = s8[0];
+          side[q + 1] = s8[1];
+          side[q + 2] = s8[2];
+          side[q + 3] = snowy || rocky || sandy || h < -0.5 ? 0 : 128 + Math.round(clamp(fd, 0, 1) * 127);
+        }
+      return { top, side };
     }
-    for (let k = 0; k < edgeIdx.length - 1; k++) {
-      const [a, as] = edgeIdx[k], [b, bs] = edgeIdx[k + 1];
-      if (a !== b) idx.push(a, as, b, b, as, bs);
+    // Сетка из кубиков: верхушки склеены в полосы, бока — от соседа до соседа
+    function voxMesh(n, levAt, skip, low) {
+      const out = [];
+      const q = (a, b, c, d, nid) => out.push(a[0], a[1], a[2], nid, b[0], b[1], b[2], nid, c[0], c[1], c[2], nid, a[0], a[1], a[2], nid, c[0], c[1], c[2], nid, d[0], d[1], d[2], nid);
+      const lv = (i, j) => (i < 0 || j < 0 || i >= n || j >= n || (skip && skip(i, j)) ? low : levAt(i, j));
+      for (let j = 0; j < n; j++) {
+        let i = 0;
+        while (i < n) {
+          if (skip && skip(i, j)) {
+            i++;
+            continue;
+          }
+          const L0 = levAt(i, j);
+          let k = i + 1;
+          while (k < n && !(skip && skip(k, j)) && levAt(k, j) === L0) k++;
+          q([i, L0, j], [k, L0, j], [k, L0, j + 1], [i, L0, j + 1], 0);
+          i = k;
+        }
+      }
+      for (let i = 0; i <= n; i++) {
+        let j = 0;
+        while (j < n) {
+          const a = lv(i - 1, j), b = lv(i, j);
+          if (a === b) {
+            j++;
+            continue;
+          }
+          let k = j + 1;
+          while (k < n && lv(i - 1, k) === a && lv(i, k) === b) k++;
+          if (a > b) q([i, b, j], [i, b, k], [i, a, k], [i, a, j], 1);
+          else q([i, a, j], [i, a, k], [i, b, k], [i, b, j], 2);
+          j = k;
+        }
+      }
+      for (let j = 0; j <= n; j++) {
+        let i = 0;
+        while (i < n) {
+          const a = lv(i, j - 1), b = lv(i, j);
+          if (a === b) {
+            i++;
+            continue;
+          }
+          let k = i + 1;
+          while (k < n && lv(k, j - 1) === a && lv(k, j) === b) k++;
+          if (a > b) q([i, b, j], [k, b, j], [k, a, j], [i, a, j], 3);
+          else q([i, a, j], [k, a, j], [k, b, j], [i, b, j], 4);
+          i = k;
+        }
+      }
+      return new Int16Array(out);
     }
-    const terrain = { v: tv, i: new Uint16Array(idx) };
-    // Дальняя земля до горизонта (без середины)
-    const FN = (2 * FAR) / FCELL, FNV = FN + 1;
-    const fv = [], fi = [];
-    for (let j = 0; j < FNV; j++)
-      for (let i = 0; i < FNV; i++) {
-        const x = -FAR + i * FCELL, z = -FAR + j * FCELL;
-        const h = H0(x, z), e = 30;
-        const nn = norm3([H0(x - e, z) - H0(x + e, z), 2 * e, H0(x, z - e) - H0(x, z + e)]);
-        const c = colorAt(x, z, h, Math.sqrt(1 - nn[1] * nn[1]) / Math.max(nn[1], 0.2), forestK(x / R, z / R));
-        fv.push(x, h - (Math.abs(x) <= R && Math.abs(z) <= R ? 2 : 0), z, nn[0], nn[1], nn[2], c[0], c[1], c[2]);
-      }
-    for (let j = 0; j < FN; j++)
-      for (let i = 0; i < FN; i++) {
-        const x0 = -FAR + i * FCELL, z0 = -FAR + j * FCELL;
-        if (x0 >= -R && x0 + FCELL <= R && z0 >= -R && z0 + FCELL <= R) continue;
-        const a = j * FNV + i, b = a + 1, c = a + FNV, d = c + 1;
-        fi.push(a, c, b, b, c, d);
-      }
-    const far = { v: new Float32Array(fv), i: new Uint16Array(fi) };
+    const levD = (i, j) => vox[j * VN + i];
+    const voxD = { mesh: voxMesh(VN, levD, null, -60), ...voxTex(VN, VB, -R, VB, levD), n: VN, cw: VB, vy: VB, org: -R };
+    const fLev = new Int16Array(FVN * FVN);
+    const fIn = (i, j) => {
+      const x0 = -FAR + i * FB, z0 = -FAR + j * FB;
+      return x0 >= -R && x0 + FB <= R && z0 >= -R && z0 + FB <= R;
+    };
+    for (let j = 0; j < FVN; j++) for (let i = 0; i < FVN; i++) fLev[j * FVN + i] = fIn(i, j) ? -100 : Math.round((H0(-FAR + (i + 0.5) * FB, -FAR + (j + 0.5) * FB) - 0.6) / FVH);
+    const levF = (i, j) => fLev[j * FVN + i];
+    const voxF = { mesh: voxMesh(FVN, levF, fIn, -100), ...voxTex(FVN, FB, -FAR, FVH, levF, fIn), n: FVN, cw: FB, vy: FVH, org: -FAR };
 
     /* ----- Деревья ----- */
     const inst = { conifer: [], broad: [], poplar: [] };
@@ -1446,6 +1531,15 @@
     const near = (x, z, list, pad) => list.some((s) => Math.hypot(s.x - x, s.z - z) < s.r + pad);
     const fallForest = (x, z) => (fall ? sstep(260, 60, Math.hypot(x - fall.x, z - fall.z)) : 0);
     const SP = 7;
+    // цвет кроны: зелень, осенние рощи, цветущие сады
+    const palIdx = (x, z, kind) => {
+      if (kind === 'conifer') return rnd() < 0.5 ? 11 : 12;
+      const au = noise.fbm(x * 0.0025 + 70, z * 0.0025 + 20, 3), bl = noise.fbm(x * 0.004 + 5, z * 0.004 + 90, 3);
+      if (bl > 0.6 && rnd() < 0.7) return rnd() < 0.6 ? 8 : 9;
+      if (au > 0.56 && rnd() < 0.75) return [5, 6, 7][Math.floor(rnd() * 3)];
+      if (rnd() < 0.04) return 10;
+      return Math.floor(rnd() * 5);
+    };
     for (let z = -R + 8; z < R - 8; z += SP)
       for (let x = -R + 8; x < R - 8; x += SP) {
         const px = x + (rnd() - 0.5) * SP * 0.9, pz = z + (rnd() - 0.5) * SP * 0.9;
@@ -1454,11 +1548,12 @@
         const h = ground(px, pz);
         if (h < 1.2 || h > treeline + rnd() * 40) continue;
         if (slopeAt(px, pz, 5) > 0.75) continue;
+        if (fall && distSeg(px, pz, fall.pool.x, fall.pool.z, fall.pool.x + fall.dx * 75, fall.pool.z + fall.dz * 75)[0] < 30) continue;
         if (riverDist(px, pz) < 3 || near(px, pz, S, 6) || near(px, pz, lakes, 3) || near(px, pz, houses, 3)) continue;
         if (mapAt(px, pz, 2) > 40 || mapAt(px, pz, 0) > 30 || mapAt(px, pz, 3) > 30) continue;
         const sc = 0.75 + rnd() * 0.55;
         const kind = h > 110 || (has('snow') && rnd() < 0.5) || noise.n2(px * 0.004, pz * 0.004) > 0.62 ? 'conifer' : rnd() < 0.12 ? 'poplar' : 'broad';
-        inst[kind].push(px, h - 0.3, pz, sc, rnd() * 6.28, 1, 0, rnd());
+        inst[kind].push(px, h - 0.1, pz, sc, Math.floor(rnd() * 4) * 1.5708, 1, 0, palIdx(px, pz, kind));
       }
     // Деревья вдоль дорог
     for (const rd of roads)
@@ -1468,10 +1563,11 @@
         const side = rnd() < 0.5 ? 1 : -1, x = p.x - (dz / l) * side * (rd.w + 3), z = p.z + (dx / l) * side * (rd.w + 3);
         const h = ground(x, z);
         if (h < 1.5 || near(x, z, S, 4) || near(x, z, houses, 3) || riverDist(x, z) < 3 || mapAt(x, z, 3) > 30) continue;
-        inst[rnd() < 0.5 ? 'poplar' : 'broad'].push(x, h - 0.3, z, 0.8 + rnd() * 0.4, rnd() * 6.28, 1, 0, rnd());
+        const kd = rnd() < 0.5 ? 'poplar' : 'broad';
+        inst[kd].push(x, h - 0.1, z, 0.8 + rnd() * 0.4, Math.floor(rnd() * 4) * 1.5708, 1, 0, palIdx(x, z, kd));
       }
     let total = (inst.conifer.length + inst.broad.length + inst.poplar.length) / 8;
-    const CAP = 9000;
+    const CAP = 12000;
     if (total > CAP)
       for (const k in inst) {
         const a = inst[k], keep = [];
@@ -1480,6 +1576,13 @@
       }
     total = (inst.conifer.length + inst.broad.length + inst.poplar.length) / 8;
 
+    /* ----- Облака из кубиков ----- */
+    inst.cloud = [];
+    for (let k = 0; k < 30; k++) {
+      const x = (rnd() - 0.5) * 16000, z = (rnd() - 0.5) * 12000;
+      inst.cloud.push(x, 520 + rnd() * 320, z, 1 + rnd() * 1.8, Math.floor(rnd() * 4) * 1.5708, 0, 0, -2);
+    }
+
     /* ----- Лодки ----- */
     inst.ship = [];
     if (coastal) {
@@ -1487,7 +1590,7 @@
       for (let k = 0, tries = 0; k < nShip && tries < 400; tries++) {
         const a = rnd() * 6.28, rr = 0.3 + rnd() * 0.7, x = Math.cos(a) * rr * R, z = Math.sin(a) * rr * R;
         if (ground(x, z) > -4 || ground(x + 20, z) > -2 || ground(x - 20, z) > -2) continue;
-        inst.ship.push(x, 0, z, 1 + rnd() * 0.5, rnd() * 6.28, 0, -1, 0.5);
+        inst.ship.push(x, 0, z, 1 + rnd() * 0.5, rnd() * 6.28, 0, -1, -1);
         k++;
       }
     }
@@ -1522,7 +1625,11 @@
     const water = []; // x, y, z, течение x, течение z
     const wq = (x0, z0, x1, z1, y) => water.push(x0, y, z0, 0, 0, x1, y, z0, 0, 0, x1, y, z1, 0, 0, x0, y, z0, 0, 0, x1, y, z1, 0, 0, x0, y, z1, 0, 0);
     wq(-16000, -16000, 16000, 16000, 0);
-    for (const l of lakes) wq(l.x - l.r * 1.3, l.z - l.r * 1.3, l.x + l.r * 1.3, l.z + l.r * 1.3, l.L);
+    for (const l of lakes)
+      for (let k = 0; k < 32; k++) {
+        const a0 = (k / 32) * 6.2832, a1 = ((k + 1) / 32) * 6.2832, rr = l.r * 1.22;
+        water.push(l.x, l.L, l.z, 0, 0, l.x + Math.cos(a0) * rr, l.L, l.z + Math.sin(a0) * rr, 0, 0, l.x + Math.cos(a1) * rr, l.L, l.z + Math.sin(a1) * rr, 0, 0);
+      }
     for (const rv of rivers) {
       const P = rv.pts;
       const pp = (k) => {
@@ -1630,7 +1737,7 @@
 
     const objects = new Float32Array(geo.a);
     return {
-      f, R, ground, H0, terrain, far, objects, map, hmap, pool, sprites: new Float32Array(sprites), inst, animals,
+      f, R, ground, H0, voxD, voxF, objects, map, hmap, pool, sprites: new Float32Array(sprites), inst, animals,
       water: new Float32Array(water), falls: new Float32Array(falls), labels, shots, pois, coastal, S, lakes,
       stats: { ms: Math.round(performance.now() - T0), trees: total, houses: houses.length },
     };
@@ -1673,7 +1780,7 @@ vec3 fogIt(vec3 c, vec3 wp){
   float hf = exp(-max(wp.y, 0.) * .0035);
   float f = 1. - exp(-dist * uFogD * (.35 + .65 * hf));
   float sg = pow(max(dot(v, uSunD), 0.), 6.);
-  return mix(c, mix(uFogC, uGlow, sg * .75), clamp(f, 0., 1.));
+  return mix(c, mix(uFogC, uGlow, sg * .5), clamp(f, 0., 1.));
 }
 vec3 tone(vec3 x){ x *= uExp; x = (x * (2.51 * x + .03)) / (x * (2.43 * x + .59) + .14); return pow(clamp(x, 0., 1.), vec3(.4545)) * uFade; }
 `;
@@ -1704,54 +1811,90 @@ void main(){
   }
   gl_FragColor = vec4(tone(c), 1.);
 }`;
-  const VS_TER = `attribute vec3 aPos; attribute vec3 aNrm; attribute vec3 aCol; uniform mat4 uVP;
-varying vec3 vP; varying vec3 vN; varying vec3 vC;
-void main(){ vP = aPos; vN = aNrm; vC = aCol; gl_Position = uVP * vec4(aPos, 1.); }`;
-  const FS_TER = PREC + COMMON + `
-varying vec3 vP; varying vec3 vN; varying vec3 vC; uniform sampler2D uMap;
+  const VS_VOX = `attribute vec4 aPos; uniform mat4 uVP; uniform vec3 uOrg; uniform vec3 uScale;
+varying vec3 vP; varying vec3 vN;
+void main(){
+  float id = aPos.w;
+  vN = id < .5 ? vec3(0., 1., 0.) : id < 1.5 ? vec3(1., 0., 0.) : id < 2.5 ? vec3(-1., 0., 0.) : id < 3.5 ? vec3(0., 0., 1.) : vec3(0., 0., -1.);
+  vP = uOrg + vec3(aPos.x * uScale.x, aPos.y * uScale.y + .6, aPos.z * uScale.z);
+  gl_Position = uVP * vec4(vP, 1.);
+}`;
+  const FS_VOX = PREC + COMMON + `
+varying vec3 vP; varying vec3 vN;
+uniform sampler2D uMap; uniform sampler2D uTop; uniform sampler2D uSide;
+uniform vec3 uOrg; uniform vec3 uScale; uniform float uCells; uniform float uDetail;
 vec3 crop(float id){
-  if (id < 1.5) return vec3(.42, .3, .08);
-  if (id < 2.5) return vec3(.12, .22, .04);
-  if (id < 3.5) return vec3(.15, .09, .05);
-  if (id < 4.5) return vec3(.48, .4, .06);
-  if (id < 5.5) return vec3(.2, .26, .07);
-  return vec3(.2, .15, .26);
+  if (id < 1.5) return vec3(.62, .42, .07);
+  if (id < 2.5) return vec3(.16, .34, .04);
+  if (id < 3.5) return vec3(.2, .1, .04);
+  if (id < 4.5) return vec3(.78, .62, .05);
+  if (id < 5.5) return vec3(.3, .42, .07);
+  return vec3(.24, .15, .36);
 }
 void main(){
-  vec3 N = normalize(vN); vec3 alb = vC;
+  vec3 N = vN;
   float dist = length(vP - uEye);
-  float det = 1. - smoothstep(120., 900., dist);
-  float n1 = fbm3(vP.xz * .045), n2 = vnoise(vP.xz * .9), n3 = vnoise(vP.xz * 3.1);
-  alb *= .8 + .4 * n1;
-  alb *= mix(1., .86 + .28 * n2 * (.7 + .3 * n3), det);
-  vec2 uv = regUV(vP);
-  vec4 m = texture2D(uMap, uv) * inReg(uv);
-  if (m.r > .01) {
-    float id = floor(m.g * 7.08 + .4);
-    vec3 fc = crop(id);
-    float ang = id * 1.73;
-    float st = .82 + .18 * sin(dot(vP.xz, vec2(cos(ang), sin(ang))) * 2.2);
-    fc *= mix(1., st, det * .9 + .1) * (.85 + .3 * n1);
-    alb = mix(alb, fc, smoothstep(.55, .95, m.r));
-    alb = mix(alb, vec3(.07, .12, .04), smoothstep(.05, .45, m.r) * (1. - smoothstep(.45, .95, m.r)) * .9);
+  vec2 cp = vP.xz - N.xz * uScale.x * .5;
+  vec2 cuv = (cp - uOrg.xz) / (uScale.x * uCells);
+  vec4 tp = texture2D(uTop, cuv);
+  vec3 topC = pow(tp.rgb, vec3(2.2));
+  float topY = (floor(tp.a * 255. + .5) - 64.) * uScale.y + .6;
+  float sub = uScale.x * .5, subY = uScale.y * .5;
+  vec3 alb; vec2 g; vec2 cs; float depth = 0.;
+  vec4 sd = texture2D(uSide, cuv);
+  float lod = 1. - smoothstep(uScale.x * 30., uScale.x * 160., dist);
+  if (N.y > .5) {
+    alb = topC; g = vP.xz; cs = vec2(sub);
+    // цветы — мелкие точки на лугу
+    if (sd.a > .5) {
+      float fd = clamp((sd.a * 255. - 128.) / 127., 0., 1.);
+      vec2 fc = floor(vP.xz / (sub * .5));
+      if (hash12(fc * 1.31 + 7.) < fd * .2) {
+        float k = hash12(fc + 3.3);
+        vec3 fl = k < .25 ? vec3(.86, .38, .55) : k < .45 ? vec3(.85, .83, .78) : k < .65 ? vec3(.86, .66, .08) : k < .82 ? vec3(.7, .1, .07) : vec3(.38, .2, .62);
+        alb = mix(alb, fl, .15 + .85 * lod);
+      }
+    }
+  } else {
+    vec3 sc = pow(sd.rgb, vec3(2.2));
+    depth = topY - vP.y;
+    alb = sc;
+    if (sd.a > .5) {
+      float lip = subY * .55 + vnoise(vec2(dot(vP.xz, vec2(-N.z, N.x)) * .6, 3.)) * subY * .5;
+      alb = depth < lip ? topC : (depth < uScale.y * 2.2 ? sc : vec3(.16, .15, .14));
+    }
+    g = vec2(dot(vP.xz, vec2(-N.z, N.x)), vP.y - .6); cs = vec2(sub, subY);
   }
-  alb = mix(alb, vec3(.24, .18, .11) * (.8 + .3 * n2), smoothstep(.15, .7, m.b));
-  if (m.a > .01) {
-    vec2 g = vP.xz * 1.7; vec2 cell = floor(g + vec2(0., floor(g.x) * .5));
-    vec2 cf = fract(g + vec2(0., floor(g.x) * .5)) - .5;
-    float cob = smoothstep(.5, .36, max(abs(cf.x), abs(cf.y)));
-    vec3 pc = vec3(.15, .135, .115) * (.7 + .5 * hash12(cell)) * mix(.85, .55 + .45 * cob, det);
-    alb = mix(alb, pc, smoothstep(.2, .75, m.a));
+  // мелкие кубики: у каждого свой оттенок и тонкий шов
+  vec2 gi = floor(g / cs);
+  float h1 = hash12(gi + N.xz * 17. + floor(vP.y / max(subY, 1.)) * (1. - N.y) * 3.1);
+  alb *= mix(1., .82 + .36 * h1, .3 + .7 * lod);
+  vec2 fr = abs(fract(g / cs) - .5);
+  alb *= mix(1., .8 + .2 * smoothstep(.5, .42, max(fr.x, fr.y)), lod);
+  // поля, дороги, мостовая — по клеточкам
+  if (N.y > .5 && uDetail > .5) {
+    vec2 cc = (floor(vP.xz / sub) + .5) * sub;
+    vec2 uv = regUV(vec3(cc.x, 0., cc.y));
+    vec4 m = texture2D(uMap, uv) * inReg(uv);
+    if (m.r > .5) {
+      float id = floor(m.g * 7.08 + .4);
+      vec3 fc = crop(id) * (.85 + .3 * h1);
+      float ang = id * 1.73;
+      if (mod(floor(dot(cc, vec2(cos(ang), sin(ang))) / sub), 2.) < .5) fc *= .8;
+      alb = fc;
+    } else if (m.r > .1) alb = vec3(.05, .13, .03) * (.8 + .4 * h1);
+    if (m.b > .45) alb = vec3(.28, .19, .1) * (.8 + .3 * h1) * (.85 + .3 * vnoise(vP.xz * 1.3));
+    if (m.a > .45) {
+      // брусчатка: мелкие камни вблизи
+      vec2 gq = vP.xz * 1.6; vec2 ce = floor(gq + vec2(0., floor(gq.x) * .5));
+      vec2 cf = fract(gq + vec2(0., floor(gq.x) * .5)) - .5;
+      float near = 1. - smoothstep(30., 120., dist);
+      alb = vec3(.17, .155, .135) * (.7 + .5 * mix(h1, hash12(ce), near)) * mix(1., .6 + .4 * smoothstep(.5, .38, max(abs(cf.x), abs(cf.y))), near);
+    }
   }
-  float slope = 1. - N.y;
-  if (slope > .25) {
-    float strata = vnoise(vec2(vP.y * .45 + n1 * 3., (vP.x + vP.z) * .02));
-    alb *= mix(1., .7 + .55 * strata * (.8 + .4 * n3), smoothstep(.25, .5, slope));
-  }
-  // травинки и тень между ними вблизи
-  alb *= mix(1., .82 + .3 * vnoise(vP.xz * 7.3) * vnoise(vP.xz * 2.7 + 5.), det * (1. - smoothstep(.0, .3, m.a + m.b)));
-  float ao = .85 + .15 * smoothstep(-.2, .3, n1 - .5 + N.y * .3);
-  vec3 c = shade(alb, N, vP, ao, .2);
+  // бока внизу — в тени соседей
+  alb *= mix(1., .58, smoothstep(0., uScale.y * 4., depth));
+  vec3 c = shade(alb, N, vP, 1., .05);
   gl_FragColor = vec4(tone(fogIt(c, vP)), 1.);
 }`;
   const VS_OBJ = `attribute vec3 aPos; attribute vec3 aNrm; attribute vec3 aCol; attribute float aX; uniform mat4 uVP;
@@ -1776,7 +1919,13 @@ void main(){
 }`;
   const VS_INST = `attribute vec3 aPos; attribute vec3 aNrm; attribute vec3 aCol; attribute vec4 iA; attribute vec4 iB;
 uniform mat4 uVP; uniform float uTime;
-varying vec3 vP; varying vec3 vN; varying vec3 vC; varying float vAO;
+varying vec3 vP; varying vec3 vN; varying vec3 vC; varying float vAO; varying vec3 vLoc; varying vec3 vNl; varying float vKind;
+vec3 pal(float i){
+  vec3 c = i < .5 ? vec3(.25, .56, .23) : i < 1.5 ? vec3(.18, .48, .21) : i < 2.5 ? vec3(.35, .64, .25) : i < 3.5 ? vec3(.44, .66, .24) : i < 4.5 ? vec3(.16, .42, .29)
+    : i < 5.5 ? vec3(.88, .54, .17) : i < 6.5 ? vec3(.79, .28, .12) : i < 7.5 ? vec3(.9, .72, .23) : i < 8.5 ? vec3(.95, .66, .78) : i < 9.5 ? vec3(.96, .94, .9)
+    : i < 10.5 ? vec3(.54, .35, .69) : i < 11.5 ? vec3(.12, .3, .15) : vec3(.19, .38, .2);
+  return pow(c, vec3(2.2));
+}
 void main(){
   float s = iA.w, cy = cos(iB.x), sy = sin(iB.x);
   vec3 p = aPos * s;
@@ -1785,19 +1934,40 @@ void main(){
   float w = iB.y * aPos.y * aPos.y * .0016 * s;
   q.x += sin(uTime * 1.3 + iA.x * .05 + iA.z * .03) * w;
   q.z += cos(uTime * 1.07 + iA.z * .05) * w * .6;
-  vec3 wp = iA.xyz + q;
+  vec3 base = iA.xyz;
+  if (iB.w < -1.5) base.x = mod(iA.x + uTime * 2.5 + 9000., 18000.) - 9000.;
+  vec3 wp = base + q;
   if (iB.z < 0.) wp.y += sin(uTime * .9 + iA.x) * .35;
   vP = wp;
   vN = vec3(aNrm.x * cy - aNrm.z * sy, aNrm.y, aNrm.x * sy + aNrm.z * cy);
-  vC = aCol * mix(vec3(.82, 1., .82), vec3(1.18, 1.06, .72), iB.w);
-  vAO = iB.y > 0. ? clamp(.45 + aPos.y / 11., .45, 1.) : 1.;
+  vC = aCol;
+  if (iB.w > -.5 && abs(aCol.r - aCol.g) + abs(aCol.g - aCol.b) < .003) vC = pal(iB.w) * aCol.r * 1.1;
+  vAO = iB.y > 0. ? clamp(.55 + aPos.y / 9., .55, 1.) : 1.;
+  vLoc = aPos; vNl = aNrm; vKind = iB.y > 0. ? 1. : iB.w;
   gl_Position = uVP * vec4(wp, 1.);
 }`;
   const FS_INST = PREC + COMMON + `
-varying vec3 vP; varying vec3 vN; varying vec3 vC; varying float vAO;
+varying vec3 vP; varying vec3 vN; varying vec3 vC; varying float vAO; varying vec3 vLoc; varying vec3 vNl; varying float vKind;
 void main(){
   vec3 N = normalize(vN);
-  vec3 c = shade(vC, N, vP, vAO, .5) * vAO;
+  vec3 alb = vC;
+  float lod = 1. - smoothstep(60., 400., length(vP - uEye));
+  if (vKind > .5) {
+    // крона из мелких кубиков
+    vec3 lp = vLoc * 1.4; vec3 an = abs(vNl);
+    vec2 g2 = an.y > .5 ? lp.xz : (an.x > .5 ? lp.zy : lp.xy);
+    vec2 fr = abs(fract(g2) - .5);
+    float hh = hash12(floor(g2) + floor(lp.y) * 1.7 + an.xz * 5.);
+    alb *= mix(1., (.8 + .36 * hh) * (.82 + .18 * smoothstep(.5, .4, max(fr.x, fr.y))), .4 + .6 * lod);
+  }
+  if (vKind < -1.5) {
+    // облако: мягкий свет без теней от гор
+    float d = clamp((dot(N, uL) + .6) / 1.6, 0., 1.);
+    vec3 c = alb * (uLCol * d * .9 + uSkyA * 1.4 + uGlow * .25);
+    gl_FragColor = vec4(tone(fogIt(c, vP)), 1.);
+    return;
+  }
+  vec3 c = shade(alb, N, vP, vAO, .5) * vAO;
   vec3 V = normalize(uEye - vP);
   c += vC * uLCol * pow(max(dot(-V, uL), 0.), 4.) * .25 * lightAt(vP).x;
   gl_FragColor = vec4(tone(fogIt(c, vP)), 1.);
@@ -1937,8 +2107,8 @@ void main(){
       P.L = moon;
       P.lc = mulc(MOON, sstep(-0.04, -0.2, e));
     }
-    P.fogD = lerp(0.00042, 0.00028, sstep(-0.1, 0.3, e));
-    P.cloud = 0.25;
+    P.fogD = lerp(0.00026, 0.00013, sstep(-0.1, 0.25, e));
+    P.cloud = 0.12;
     P.sunC = mixc(lin('#ff7a3a', 3), lin('#fff6e8', 4), sstep(0, 0.3, e));
     if (storm) {
       const gray = (c, k2) => {
@@ -1961,9 +2131,9 @@ void main(){
   /* =========================================================
      4. ТЕМА «МИР КНИГИ»: отрисовка, кадры, управление
      ========================================================= */
-  const SHOT_TOD = { overview: null, street: 20.4, waterfall: 9.6, castle: 19.1, flight: 17.4, coast: 18.7, valley: 15.6 };
+  const SHOT_TOD = { overview: 17.7, street: 20.4, waterfall: 10.2, castle: 19.1, flight: 17.3, coast: 18.5, valley: 16.6 };
   const BOOK_TOD = { day: 13.5, dusk: 18.9, night: 23, storm: 14 };
-  const MESH_OF = { conifer: 'conifer', broad: 'broad', poplar: 'poplar', ship: 'ship', sheep: 'sheep', cow: 'cow', deer: 'deer' };
+  const MESH_OF = { conifer: 'conifer', broad: 'broad', poplar: 'poplar', ship: 'ship', sheep: 'sheep', cow: 'cow', deer: 'deer', cloud: 'cloud' };
 
   App.World3D = {
     on: false,
@@ -2005,7 +2175,7 @@ void main(){
       try {
         this.P = {
           sky: this.program(VS_FULL, FS_SKY),
-          ter: this.program(VS_TER, FS_TER),
+          vox: this.program(VS_VOX, FS_VOX),
           obj: this.program(VS_OBJ, FS_OBJ),
           inst: this.program(VS_INST, FS_INST),
           water: this.program(VS_WATER, FS_WATER),
@@ -2149,15 +2319,13 @@ void main(){
         return;
       }
       const gl = this.gl, B = this.B;
-      for (const k of ['ter', 'terI', 'far', 'farI', 'obj', 'spr', 'water', 'falls', 'birds']) if (B[k]) gl.deleteBuffer(B[k]);
+      for (const k of ['voxD', 'voxF', 'obj', 'spr', 'water', 'falls', 'birds']) if (B[k]) gl.deleteBuffer(B[k]);
       for (const k in this.instB || {}) gl.deleteBuffer(this.instB[k]);
       if (this.T) for (const k in this.T) gl.deleteTexture(this.T[k]);
-      B.ter = this.buf(w.terrain.v);
-      B.terI = this.buf(w.terrain.i, gl.ELEMENT_ARRAY_BUFFER);
-      B.terN = w.terrain.i.length;
-      B.far = this.buf(w.far.v);
-      B.farI = this.buf(w.far.i, gl.ELEMENT_ARRAY_BUFFER);
-      B.farN = w.far.i.length;
+      B.voxD = this.buf(w.voxD.mesh);
+      B.voxDN = w.voxD.mesh.length / 4;
+      B.voxF = this.buf(w.voxF.mesh);
+      B.voxFN = w.voxF.mesh.length / 4;
       B.obj = this.buf(w.objects);
       B.objN = w.objects.length / 10;
       B.spr = this.buf(w.sprites);
@@ -2183,7 +2351,15 @@ void main(){
         this.instN[k] = n;
       }
       this.lightBuf = new Uint8Array(HT * HT * 4);
-      this.T = { map: this.tex(TEX, TEX, w.map), h: this.tex(HT, HT, w.hmap, gl.NEAREST), light: this.tex(HT, HT, this.lightBuf) };
+      this.T = {
+        map: this.tex(TEX, TEX, w.map, gl.NEAREST),
+        h: this.tex(HT, HT, w.hmap, gl.NEAREST),
+        light: this.tex(HT, HT, this.lightBuf),
+        top: this.tex(w.voxD.n, w.voxD.n, w.voxD.top, gl.NEAREST),
+        side: this.tex(w.voxD.n, w.voxD.n, w.voxD.side, gl.NEAREST),
+        ftop: this.tex(w.voxF.n, w.voxF.n, w.voxF.top, gl.NEAREST),
+        fside: this.tex(w.voxF.n, w.voxF.n, w.voxF.side, gl.NEAREST),
+      };
       this.shadowKey = null;
       this.world = w;
       this.facts = w.f;
@@ -2411,12 +2587,18 @@ void main(){
         fov = 1.0;
         near = 3;
       } else {
-        // обзор: высоко, медленно по кругу
-        const a = sh.a0 + T * 0.02;
+        // обзор: высоко над долиной, горы — в глубине кадра, солнце сбоку
+        const mt = w.labels.find((l) => l.type === 'mountain');
         const c = w.pois[0];
-        const x = c.x * 0.3 + Math.cos(a) * 900, z = c.z * 0.3 + Math.sin(a) * 900;
-        eye = [x, Math.max(g(x, z) + 160, 430), z];
-        look = [c.x * 0.3, 40, c.z * 0.3];
+        let dir = mt ? [mt.x - c.x * 0.3, mt.z - c.z * 0.3] : [Math.cos(sh.a0), Math.sin(sh.a0)];
+        const dl = Math.hypot(dir[0], dir[1]) || 1;
+        dir = [dir[0] / dl, dir[1] / dl];
+        const sway = Math.sin(sh.a0 + T * 0.035) * 0.35 + (sh.a0 > 3.14 ? 0.25 : -0.25);
+        const cs = Math.cos(sway), sn = Math.sin(sway);
+        const d2 = [dir[0] * cs - dir[1] * sn, dir[0] * sn + dir[1] * cs];
+        const x = c.x * 0.3 - d2[0] * (900 - T * 6), z = c.z * 0.3 - d2[1] * (900 - T * 6);
+        eye = [x, Math.max(g(x, z) + 200, 360), z];
+        look = [x + d2[0] * 1600, 60, z + d2[1] * 1600];
         near = 4;
       }
       // параллакс за мышью (в фоне — едва заметный)
@@ -2438,8 +2620,8 @@ void main(){
       const sh = this.shot;
       const book = BOOK_TOD[this.facts.time] || 13.5;
       let v = (sh && SHOT_TOD[sh.type]) || book;
-      // ночная книга — и кадры тянутся к вечеру
-      if (this.facts.time === 'night' && sh && sh.type !== 'waterfall' && sh.type !== 'valley') v = Math.max(v, 20.3);
+      // ночная книга — крепость и побережье ночью; остальное — в золотой час
+      if (this.facts.time === 'night' && sh && (sh.type === 'castle' || sh.type === 'coast')) v = 21.4;
       // медленно течёт внутри кадра
       return (v + (sh ? Math.min(sh.t, 60) : 0) * 0.012 + 24) % 24;
     },
@@ -2481,7 +2663,7 @@ void main(){
         arr[i * 8 + 4] = a.yaw;
         arr[i * 8 + 5] = 0;
         arr[i * 8 + 6] = a.moving ? 1 : 0;
-        arr[i * 8 + 7] = 0.5;
+        arr[i * 8 + 7] = -1;
       }
       for (const k in this.animalData) {
         gl.bindBuffer(gl.ARRAY_BUFFER, this.instB[k]);
@@ -2624,7 +2806,7 @@ void main(){
         gl.uniform1f(u.uOn, P.on);
         gl.uniform1f(u.uR, w.R);
         gl.uniform1f(u.uFade, fade);
-        gl.uniform1f(u.uPoolK, 1);
+        gl.uniform1f(u.uPoolK, 0.6);
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, this.T.light);
         gl.uniform1i(u.uLight, 0);
@@ -2654,16 +2836,25 @@ void main(){
       gl.enable(gl.DEPTH_TEST);
       gl.depthMask(true);
       gl.disable(gl.CULL_FACE);
-      // Земля: дальняя и подробная
-      common(this.P.ter);
-      attrs(this.B.far, 36, [[0, 3, 0], [1, 3, 12], [2, 3, 24]]);
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.B.farI);
-      gl.drawElements(gl.TRIANGLES, this.B.farN, gl.UNSIGNED_SHORT, 0);
-      reset();
-      attrs(this.B.ter, 36, [[0, 3, 0], [1, 3, 12], [2, 3, 24]]);
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.B.terI);
-      gl.drawElements(gl.TRIANGLES, this.B.terN, gl.UNSIGNED_SHORT, 0);
-      reset();
+      // Земля из кубиков: сначала дальние горы, потом подробная часть
+      u = common(this.P.vox);
+      for (const [buf, n, V, top, side, det] of [[this.B.voxF, this.B.voxFN, w.voxF, this.T.ftop, this.T.fside, 0], [this.B.voxD, this.B.voxDN, w.voxD, this.T.top, this.T.side, 1]]) {
+        gl.uniform3f(u.uOrg, V.org, 0, V.org);
+        gl.uniform3f(u.uScale, V.cw, V.vy, V.cw);
+        gl.uniform1f(u.uCells, V.n);
+        gl.uniform1f(u.uDetail, det);
+        gl.activeTexture(gl.TEXTURE3);
+        gl.bindTexture(gl.TEXTURE_2D, top);
+        gl.uniform1i(u.uTop, 3);
+        gl.activeTexture(gl.TEXTURE4);
+        gl.bindTexture(gl.TEXTURE_2D, side);
+        gl.uniform1i(u.uSide, 4);
+        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+        gl.enableVertexAttribArray(0);
+        gl.vertexAttribPointer(0, 4, gl.SHORT, false, 8, 0);
+        gl.drawArrays(gl.TRIANGLES, 0, n);
+        gl.disableVertexAttribArray(0);
+      }
       // Постройки и птицы
       u = common(this.P.obj);
       gl.uniform1f(u.uPoolK, 0.3);
